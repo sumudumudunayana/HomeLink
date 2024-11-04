@@ -9,7 +9,13 @@ class ReceiveESP32Data(APIView):
 
     def post(self, request):
         print("DATA", request.data)
+        data = request.data
+        cmd = data.get("cmd")
+        if cmd == "door_open":
+            msg = "DOOR HAS BEEN OPENED"
+        if cmd == "door_closed":
+            msg = "DOOR HAS BEEN CLOSED"
         return Response(
-            {"status": "DOOR HAS BEEN OPENED"},
+            {"status": msg},
             status=status.HTTP_200_OK,
         )
