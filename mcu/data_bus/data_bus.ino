@@ -1,19 +1,27 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <ArduinoJson.h>
 
-const char* ssid = "XXXXXX";
-const char* password = "XXXXXX";
+#define RXp2 16
+#define TXp2 17
 
-const char* serverName = "http://XXX.XXX.X.X:8000/";
+
+const char* ssid = "XXX";
+const char* password = "XXX";
+
+const char* serverName = "http://XXX.XXX.XXX.XXX:8000/api/mcu/data";
+
+const char* cmds[] = { "door_closed", "fan_on", "fan_off", "door_open" };  // Array of valid commands
+const int numCmd = sizeof(cmds) / sizeof(cmds[0]);                         // Calculate number of commands
+
+
 
 void setup() {
   Serial.begin(115200);
-  Serial.setDebugOutput(true);
-  Serial.println();
+  Serial2.begin(9600, SERIAL_8N1, RXp2, TXp2);
+  WiFi.begin(ssid, password);
 
-  WiFi.begin(ssid,password);
-
-  while(WiFi.status() != WL_CONNECTED){
+  while (WiFi.status() != WL_CONNECTED) {
     delay(100);
     Serial.println("Connecting to the WiFi...");
   }
@@ -24,23 +32,43 @@ void setup() {
 }
 
 void loop() {
-  delay(500);
-  Serial.println("Ready for Input");
+  String cmdStr = Serial2.readString();
+  cmdStr.trim();
+  if(cmdStr.isEmpty()){
+    return;
+  }
+  Serial.print("Recieved Command: ");
+  Serial.println(cmdStr);
 
-  while(Serial.available() == 0){}
-  String testStr  = Serial.readString();
-  testStr.trim();
-  if (testStr != "Skip"){
+  //check command exists
+  bool cmdFound = false;
+  for (int i = 0; i < numCmd; i++) {
+    if (cmdStr == cmds[i]) {
+      cmdFound = true;
+      break;
+    }
+  }
+  if (cmdFound) {
     HTTPClient http;
 
     http.begin(serverName);
-    http.addHeader("Content-Type", "text/plain");
-    String httpRequestData = testStr;
-    int httpResponseCode = http.POST(httpRequestData);
-    
-    if (httpResponseCode > 0){
+    http.addHeader("Content-Type", "application/json");
+
+    // allocate the memory for the document
+    const size_t CAPACITY = JSON_OBJECT_SIZE(1);
+    StaticJsonDocument<CAPACITY> doc;
+
+    JsonObject object = doc.to<JsonObject>();
+    object["cmd"] = cmdStr;
+
+    String requestBody;
+    serializeJson(doc, requestBody);
+
+    int httpResponseCode = http.POST(String(requestBody));
+
+    if (httpResponseCode > 0) {
       Serial.print("Good HTTP response code: ");
-    }else{
+    } else {
       Serial.print("Bad HTTP response code: ");
     }
     Serial.println(httpResponseCode);
@@ -49,8 +77,7 @@ void loop() {
     Serial.println(response);
 
     http.end();
-  }else{
-    Serial.println("Skip");
+  } else {
+    Serial.println("ERROR: Unknown Command");
   }
-
 }
