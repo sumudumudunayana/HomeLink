@@ -1,6 +1,6 @@
 import json
 
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 
 
 class ChatConsumer(WebsocketConsumer):
@@ -15,3 +15,24 @@ class ChatConsumer(WebsocketConsumer):
         message = text_data_json["message"]
 
         self.send(text_data=json.dumps({"message": message}))
+
+
+class DoorStatusConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        pass
+
+    async def receive(self, text_data=None, bytes_data=None):
+        # Receive message from WebSocket
+        pass
+
+    async def send_door_status(self, event):
+        print("EVENT", event)
+        await self.send(
+            text_data={
+                "type": "door_status",
+                "details": "open",
+            }
+        )
