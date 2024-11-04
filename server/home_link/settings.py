@@ -39,6 +39,8 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
+    "analytics",
     "mcu",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -77,7 +79,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "home_link.wsgi.application"
-
+ASGI_APPLICATION = "home_link.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
