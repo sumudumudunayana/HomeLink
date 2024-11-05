@@ -5,12 +5,9 @@ from rest_framework import authentication, permissions
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
-from analytics.consumers import DoorStatusConsumer
-
 
 class ReceiveESP32Data(APIView):
     def __init__(self, **kwargs):
-        self.door_consumer = DoorStatusConsumer()
         super().__init__(**kwargs)
 
     permission_classes = [permissions.AllowAny]
