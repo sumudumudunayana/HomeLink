@@ -25,8 +25,7 @@ class DoorStatusConsumer(AsyncWebsocketConsumer):
         pass
 
     async def receive(self, text_data=None, bytes_data=None):
-        # Receive message from WebSocket
-        pass
+        print("DATA: ", text_data)
 
     async def send_door_status(self, event):
         print("EVENT", event)
