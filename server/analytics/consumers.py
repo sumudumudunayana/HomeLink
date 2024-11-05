@@ -1,6 +1,7 @@
 import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
+from home_link import component_status
 
 
 class DoorStatusConsumer(AsyncWebsocketConsumer):
@@ -14,12 +15,14 @@ class DoorStatusConsumer(AsyncWebsocketConsumer):
         pass
 
     async def receive(self, text_data=None, bytes_data=None):
-        print("TEXT DATA: ", text_data)
-        pass
+        data = json.loads(text_data)
+        cmd = data.get("cmd")
+        if cmd == "door_open":
+            component_status.set_door_status(True)
+        if cmd == "door_closed":
+            component_status.set_door_status(False)
 
     async def send_message_to_frontend(self, event):
-        print("EVENT TRIGERED")
-        # Receive message from room group
-        message = event["message"]
-        # Send message to WebSocket
-        await self.send(text_data=json.dumps({"message": message}))
+        print("EVENT TRIGERED", event)
+        status = event["door_status"]
+        await self.send(text_data=json.dumps({"status": status}))

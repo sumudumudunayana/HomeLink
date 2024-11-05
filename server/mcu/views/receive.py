@@ -16,24 +16,18 @@ class ReceiveESP32Data(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        print("DATA", request.data)
         data = request.data
         cmd = data.get("cmd")
-        if cmd == "door_open":
-            msg = "DOOR HAS BEEN OPENED"
-        if cmd == "door_closed":
-            msg = "DOOR HAS BEEN CLOSED"
-
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
             "event_sharif",
             {
                 "type": "send_message_to_frontend",
-                "message": "event_trigered_from_views",
+                "door_status": cmd,
             },
         )
 
         return Response(
-            {"status": msg},
+            {"status": "COMMAND EXECUTED SUCCESSFULLY"},
             status=status.HTTP_200_OK,
         )
