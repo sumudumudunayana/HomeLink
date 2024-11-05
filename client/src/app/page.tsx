@@ -34,7 +34,7 @@ const Index = () => {
 
   return (
     <div>
-      <h1>Real-Time Chat</h1>
+      <h1>Home Link Dashboard</h1>
       <div>
         {messages.map((message, index) => (
           <div key={index}>{message}</div>
