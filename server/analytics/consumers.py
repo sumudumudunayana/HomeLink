@@ -1,37 +1,25 @@
 import json
 
-from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
-
-
-class ChatConsumer(WebsocketConsumer):
-    def connect(self):
-        self.accept()
-
-    def disconnect(self, close_code):
-        pass
-
-    def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
-
-        self.send(text_data=json.dumps({"message": message}))
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 
 class DoorStatusConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        self.room_name = "event"
+        self.room_group_name = self.room_name + "_sharif"
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
 
     async def disconnect(self, close_code):
         pass
 
     async def receive(self, text_data=None, bytes_data=None):
-        print("DATA: ", text_data)
+        print("TEXT DATA: ", text_data)
+        pass
 
-    async def send_door_status(self, event):
-        print("EVENT", event)
-        await self.send(
-            text_data={
-                "type": "door_status",
-                "details": "open",
-            }
-        )
+    async def send_message_to_frontend(self, event):
+        print("EVENT TRIGERED")
+        # Receive message from room group
+        message = event["message"]
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({"message": message}))

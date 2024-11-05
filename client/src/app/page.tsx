@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 let webSocket: WebSocket;
 if (typeof window !== "undefined") {
-  const protocol = "ws:";
+  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
 
   webSocket = new WebSocket(`${protocol}//localhost:8000/ws/door-status`);
   setInterval(() => {
@@ -23,6 +23,7 @@ const Index = () => {
   useEffect(() => {
     webSocket.onmessage = (event) => {
       if (event.data === "connection established") return;
+      console.log("THIS IS THE DATA RECEIVED FROM SERVER", event.data);
       setMessages((prevMessages) => [...prevMessages, event.data]);
     };
   }, []);
