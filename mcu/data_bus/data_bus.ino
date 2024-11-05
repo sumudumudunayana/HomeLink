@@ -6,10 +6,10 @@
 #define TXp2 17
 
 
-const char* ssid = "XXX";
-const char* password = "XXX";
+const char* ssid = "XXXXX";
+const char* password = "XXXXX";
 
-const char* serverName = "http://XXX.XXX.XXX.XXX:8000/api/mcu/data";
+const char* transmitEP = "http://XXXX.XXX.XXX.XXX:8000/api/mcu/data/receive";
 
 const char* cmds[] = { "door_closed", "fan_on", "fan_off", "door_open" };  // Array of valid commands
 const int numCmd = sizeof(cmds) / sizeof(cmds[0]);                         // Calculate number of commands
@@ -51,7 +51,7 @@ void loop() {
   if (cmdFound) {
     HTTPClient http;
 
-    http.begin(serverName);
+    http.begin(transmitEP);
     http.addHeader("Content-Type", "application/json");
 
     // allocate the memory for the document
