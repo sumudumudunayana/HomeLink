@@ -38,5 +38,5 @@ class ESP32Consumer(AsyncWebsocketConsumer):
             )
 
     async def send_commands_to_esp_32(self, event):
-        print("EVENT TRIGGERED", event)
-        await self.send(text_data=json.dumps({"status": "SENT FROM DJANGO SERVER"}))
+        cmd = event.get("door_status")
+        await self.send(text_data=json.dumps({"status": cmd}))

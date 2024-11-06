@@ -14,6 +14,11 @@ void setup() {
 }
 
 void loop() {
+  String cmdStr = Serial.readString();
+  cmdStr.trim();
+  Serial.print("Recieved Command: ");
+  Serial.println(cmdStr);
+
   pirVal = digitalRead(pirSensor);
   if (pirVal == HIGH) {
     doorServo.write(120);
