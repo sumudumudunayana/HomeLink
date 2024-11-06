@@ -1,4 +1,5 @@
 #include <Servo.h>
+#include <dht.h>
 
 Servo doorServo;
 
@@ -25,9 +26,23 @@ int distance;
 
 const int buzzerPin = 10;
 
+// Fan controller variables
+#define dhtDataPin 13
+const int lower_limit = 25;
+const int upper_limit = 35;
+
+const int fanPin = 3;
+int temState = LOW;
+int temVal = 0;
+int fanSpeed = 0;
+int dhtData;
+
+dht DHT;
+
 String DOOR_STATUS = "AUTO";
 String LIGHT_STATUS = "AUTO";
 String ALARM_STATUS = "OFF";
+String FAN_STATUS = "AUTO";
 
 void setup() {
   doorServo.attach(doorServoPin);
@@ -39,6 +54,8 @@ void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   pinMode(buzzerPin, OUTPUT);
+
+  pinMode(fanPin, OUTPUT);
 
   Serial.begin(9600);
 }
@@ -85,6 +102,21 @@ void loop() {
         == "alarm_off") {
       ALARM_STATUS = "OFF";
     }
+
+    if (cmdStr
+        == "fan_on_manual") {
+      FAN_STATUS = "MANUAL";
+      fanSpeed = 255;
+    }
+    if (cmdStr
+        == "fan_off_manual") {
+      FAN_STATUS = "MANUAL";
+      fanSpeed = 0;
+    }
+    if (cmdStr
+        == "fan_operate_auto") {
+      FAN_STATUS = "AUTO";
+    }
   }
 
   if (DOOR_STATUS == "AUTO") {
@@ -93,6 +125,23 @@ void loop() {
   if (LIGHT_STATUS == "AUTO") {
     ldrVal = analogRead(ldrPin);
   }
+  if (FAN_STATUS == "AUTO") {
+    dhtData = DHT.read11(dhtDataPin);
+    temVal = DHT.temperature;
+    fanSpeed = map(constrain(temVal, lower_limit, upper_limit), lower_limit, upper_limit, 0, 255);
+    if (fanSpeed > 0) {
+      if (temState == LOW) {
+        Serial.println("fan_on");
+        temState = HIGH;
+      }
+    } else {
+      if (temState == HIGH) {
+        Serial.println("fan_off");
+        temState = LOW;
+      }
+    }
+  }
+  analogWrite(fanPin, fanSpeed);
 
   if (ALARM_STATUS == "ON") {
     digitalWrite(trigPin, LOW);
@@ -102,19 +151,19 @@ void loop() {
       trigPin,
       HIGH);
     delayMicroseconds(
-      10);  
+      10);
 
     digitalWrite(trigPin,
-                 LOW);  
+                 LOW);
     duration = pulseIn(echoPin, HIGH);
-    distance = duration * 0.0344 / 2;  
+    distance = duration * 0.0344 / 2;
     if (distance < 20) {
       digitalWrite(buzzerPin, HIGH);
     } else {
       digitalWrite(buzzerPin, LOW);
     }
-  }else if(ALARM_STATUS == "OFF"){
-      digitalWrite(buzzerPin, LOW);
+  } else if (ALARM_STATUS == "OFF") {
+    digitalWrite(buzzerPin, LOW);
   }
 
   if (ldrVal <= 300) {

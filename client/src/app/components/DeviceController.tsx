@@ -18,6 +18,8 @@ export default function DeviceController() {
   const [lightStatus, setLightStatus] = useState<boolean>(false);
   const [lightAuto, setLightAuto] = useState<boolean>(true);
   const [alarmStatus, setAlarmStatus] = useState<boolean>(false);
+  const [fanStatus, setFanStatus] = useState<boolean>(false);
+  const [fanAuto, setFanAuto] = useState<boolean>(true);
 
   useEffect(() => {
     webSocket.onmessage = (event) => {
@@ -55,9 +57,15 @@ export default function DeviceController() {
   const handleSetAlarmStatus = (value: boolean) => {
     setAlarmStatus(value);
   };
+  const handleSetFanStatus = (value: boolean) => {
+    setFanStatus(value);
+  };
+  const handleSetFanAuto = (value: boolean) => {
+    setFanAuto(value);
+  };
 
   return (
-    <div>
+    <div className="w-36">
       <DoorController
         handleSetDoorStatus={handleSetDoorStatus}
         doorStatus={doorStatus}
@@ -75,6 +83,13 @@ export default function DeviceController() {
       <AlarmController
         handleSetAlarmStatus={handleSetAlarmStatus}
         alarmStatus={alarmStatus}
+      />
+      <br />
+      <FanController
+        handleSetFanStatus={handleSetFanStatus}
+        fanStatus={fanStatus}
+        handleSetFanAuto={handleSetFanAuto}
+        fanAuto={fanAuto}
       />
     </div>
   );
@@ -211,6 +226,58 @@ function AlarmController({ handleSetAlarmStatus, alarmStatus }) {
         }
       >
         {alarmStatus ? "Turn off Alarm" : "Turn on Alarm"}
+      </button>
+    </div>
+  );
+}
+
+function FanController({
+  handleSetFanStatus,
+  fanStatus,
+  handleSetFanAuto,
+  fanAuto,
+}) {
+  const handleFan = (command: string) => {
+    webSocket.send(JSON.stringify({ cmd: command }));
+    command == "fan_on" ? handleSetFanStatus(true) : handleSetFanStatus(false);
+  };
+  const handleFanManual = (command: string) => {
+    webSocket.send(JSON.stringify({ cmd: command }));
+    command == "fan_on_manual"
+      ? handleSetFanStatus(true)
+      : handleSetFanStatus(false);
+  };
+
+  const handleFanAuto = () => {
+    const newFanAuto = !fanAuto;
+    if (newFanAuto) {
+      webSocket.send(JSON.stringify({ cmd: "fan_operate_auto" }));
+    } else {
+      handleFanManual(fanStatus ? "fan_on_manual" : "fan_off_manual");
+    }
+    handleSetFanAuto(newFanAuto);
+  };
+  return (
+    <div className="flex flex-col items-center gap-4">
+      {fanStatus ? "FAN IS ON" : "FAN IS OFF"}
+      <button
+        className={`w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-md ${
+          fanStatus ? "bg-gray-300 text-gray-700" : ""
+        }`}
+        onClick={() =>
+          handleFanManual(fanStatus ? "fan_off_manual" : "fan_on_manual")
+        }
+      >
+        {fanStatus ? "Turn off Fan" : "Turn on Fan"}
+      </button>
+
+      <button
+        className={`w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-md ${
+          fanAuto ? "bg-gray-300 text-gray-700" : ""
+        }`}
+        onClick={() => handleFanAuto()}
+      >
+        {fanAuto ? "Manual Mode" : "Auto Mode"}
       </button>
     </div>
   );

@@ -5,7 +5,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from home_link import component_status
 from channels.layers import get_channel_layer
 
-COMMANDS = ["door_open", "door_closed", "light_on", "light_off"]
+COMMANDS = ["door_open", "door_closed", "light_on", "light_off", "fan_on", "fan_off"]
 logger = logging.getLogger(__name__)
 
 

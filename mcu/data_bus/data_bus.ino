@@ -66,6 +66,7 @@ void setup() {
 
 void loop() {
   client.poll();
+
   String cmdStr = Serial2.readString();
   cmdStr.trim();
   if (cmdStr.isEmpty()) {
