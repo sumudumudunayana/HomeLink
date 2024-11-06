@@ -1,8 +1,12 @@
 import json
+import logging
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from home_link import component_status
 from channels.layers import get_channel_layer
+
+COMMANDS = ["door_open", "door_closed", "light_on", "light_off"]
+logger = logging.getLogger(__name__)
 
 
 class ESP32Consumer(AsyncWebsocketConsumer):
@@ -17,28 +21,19 @@ class ESP32Consumer(AsyncWebsocketConsumer):
     async def receive(self, text_data=None, bytes_data=None):
         data = json.loads(text_data)
         cmd = data.get("cmd")
-        print("RECIEVED COMMAND FROM ESP32: ", text_data)
+        logger.info(f"command received from esp32: {cmd}")
         channel_layer = get_channel_layer()
-        if cmd == "door_open":
+        if cmd in COMMANDS:
             component_status.set_door_status(True)
             await channel_layer.group_send(
-                "event_sharif",
+                "next_client_event_group",
                 {
                     "type": "send_message_to_frontend",
-                    "door_status": cmd,
-                },
-            )
-        if cmd == "door_closed":
-            component_status.set_door_status(False)
-            await channel_layer.group_send(
-                "event_sharif",
-                {
-                    "type": "send_message_to_frontend",
-                    "door_status": cmd,
+                    "status": cmd,
                 },
             )
 
     async def send_commands_to_esp_32(self, event):
-        print("SENDING COMMAND TO ESP 32", event)
-        cmd = event.get("door_status")
+        logger.info("sending event to esp 32")
+        cmd = event.get("status")
         await self.send(text_data=json.dumps({"status": cmd}))

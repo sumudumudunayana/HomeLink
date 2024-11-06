@@ -6,12 +6,12 @@
 #define RXp2 16
 #define TXp2 17
 
-const char* ssid = "XXXX";
-const char* password = "XXXX";
-const char* websockets_server = "ws://XXX.XXX.XXX.XX:8000/ws/control/mcu";  //server adress and port
+const char* ssid = "XXXXX";
+const char* password = "XXXXX";
+const char* websockets_server = "ws://XXXX.XXX.XX.X:8000/ws/control/mcu";  //server adress and port
 
-const char* cmds[] = { "door_closed", "fan_on", "fan_off", "door_open" };  // Array of valid commands
-const int numCmd = sizeof(cmds) / sizeof(cmds[0]);                         // Calculate number of commands
+const char* cmds[] = { "door_closed", "door_open", "light_on", "light_off", "fan_on", "fan_off" };  // Array of valid commands
+const int numCmd = sizeof(cmds) / sizeof(cmds[0]);                                                  // Calculate number of commands
 
 
 using namespace websockets;
@@ -91,7 +91,6 @@ void loop() {
 
     String payload;
     serializeJson(doc, payload);
-    Serial.println("SENDING DATA TO SERVER");
     client.send(payload);
   } else {
     Serial.print("ERROR: Unknown Command: ");
