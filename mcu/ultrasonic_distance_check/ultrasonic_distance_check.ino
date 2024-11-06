@@ -7,11 +7,13 @@ long duration;  // Variable to store time taken to the pulse
 int distance;  // Variable to store distance calculated using
                // formula
 
+const int buzzerPin = 10;
+
 void setup() {
   pinMode(trigPin,
           OUTPUT);          // Sets the trigPin as an OUTPUT
   pinMode(echoPin, INPUT);  // Sets the echoPin as an INPUT
-
+  pinMode(buzzerPin,OUTPUT);
   // Serial Communication is starting with 9600 of
   // baudrate speed
   Serial.begin(9600);
@@ -48,8 +50,11 @@ void loop() {
                                      // distance using time
 
   Serial.print("Distance: ");
-  Serial.print(
-    distance);  // Print the output in serial monitor
-  Serial.println(" cm");
+  Serial.println(distance);
+  if(distance > 20){
+    digitalWrite(buzzerPin,HIGH);
+  }else{
+    digitalWrite(buzzerPin,LOW);
+  }
   delay(100);
 }
