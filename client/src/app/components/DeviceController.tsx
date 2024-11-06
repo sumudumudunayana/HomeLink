@@ -17,6 +17,7 @@ export default function DeviceController() {
   const [doorAuto, setDoorAuto] = useState<boolean>(true);
   const [lightStatus, setLightStatus] = useState<boolean>(false);
   const [lightAuto, setLightAuto] = useState<boolean>(true);
+  const [alarmStatus, setAlarmStatus] = useState<boolean>(false);
 
   useEffect(() => {
     webSocket.onmessage = (event) => {
@@ -51,6 +52,9 @@ export default function DeviceController() {
   const handleSetLightAuto = (value: boolean) => {
     setLightAuto(value);
   };
+  const handleSetAlarmStatus = (value: boolean) => {
+    setAlarmStatus(value);
+  };
 
   return (
     <div>
@@ -66,6 +70,11 @@ export default function DeviceController() {
         lightStatus={lightStatus}
         handleSetLightAuto={handleSetLightAuto}
         lightAuto={lightAuto}
+      />
+      <br />
+      <AlarmController
+        handleSetAlarmStatus={handleSetAlarmStatus}
+        alarmStatus={alarmStatus}
       />
     </div>
   );
@@ -178,6 +187,30 @@ function LightController({
         onClick={() => handleLightAuto()}
       >
         {lightAuto ? "Manual Mode" : "Auto Mode"}
+      </button>
+    </div>
+  );
+}
+
+function AlarmController({ handleSetAlarmStatus, alarmStatus }) {
+  const handleAlarmManual = (command: string) => {
+    webSocket.send(JSON.stringify({ cmd: command }));
+    command == "alarm_on"
+      ? handleSetAlarmStatus(true)
+      : handleSetAlarmStatus(false);
+  };
+  return (
+    <div className="flex flex-col items-center gap-4">
+      {alarmStatus ? "ALARM IS ON" : "ALARM IS OFF"}
+      <button
+        className={`w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-md ${
+          alarmStatus ? "bg-gray-300 text-gray-700" : ""
+        }`}
+        onClick={() =>
+          handleAlarmManual(alarmStatus ? "alarm_off" : "alarm_on")
+        }
+      >
+        {alarmStatus ? "Turn off Alarm" : "Turn on Alarm"}
       </button>
     </div>
   );

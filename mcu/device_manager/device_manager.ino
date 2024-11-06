@@ -16,14 +16,29 @@ const int ldrPin = A0;
 int lightState = LOW;
 int ldrVal = LOW;
 
+// Alarm controller variables
+#define echoPin 6
+#define trigPin 8
+
+long duration;
+int distance;
+
+const int buzzerPin = 10;
+
 String DOOR_STATUS = "AUTO";
 String LIGHT_STATUS = "AUTO";
+String ALARM_STATUS = "OFF";
 
 void setup() {
   doorServo.attach(doorServoPin);
   pinMode(pirSensor, INPUT);
+
   pinMode(lightPin, OUTPUT);
   pinMode(ldrPin, INPUT);
+
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(buzzerPin, OUTPUT);
 
   Serial.begin(9600);
 }
@@ -61,6 +76,15 @@ void loop() {
         == "light_operate_auto") {
       LIGHT_STATUS = "AUTO";
     }
+
+    if (cmdStr
+        == "alarm_on") {
+      ALARM_STATUS = "ON";
+    }
+    if (cmdStr
+        == "alarm_off") {
+      ALARM_STATUS = "OFF";
+    }
   }
 
   if (DOOR_STATUS == "AUTO") {
@@ -68,6 +92,29 @@ void loop() {
   }
   if (LIGHT_STATUS == "AUTO") {
     ldrVal = analogRead(ldrPin);
+  }
+
+  if (ALARM_STATUS == "ON") {
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+
+    digitalWrite(
+      trigPin,
+      HIGH);
+    delayMicroseconds(
+      10);  
+
+    digitalWrite(trigPin,
+                 LOW);  
+    duration = pulseIn(echoPin, HIGH);
+    distance = duration * 0.0344 / 2;  
+    if (distance < 20) {
+      digitalWrite(buzzerPin, HIGH);
+    } else {
+      digitalWrite(buzzerPin, LOW);
+    }
+  }else if(ALARM_STATUS == "OFF"){
+      digitalWrite(buzzerPin, LOW);
   }
 
   if (ldrVal <= 300) {

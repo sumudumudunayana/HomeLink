@@ -30,6 +30,8 @@ class NextClientConsumer(AsyncWebsocketConsumer):
             "light_on_manual",
             "light_off_manual",
             "light_operate_auto",
+            "alarm_on",
+            "alarm_off",
         ]:
             component_status.set_door_status(True)
             await channel_layer.group_send(
