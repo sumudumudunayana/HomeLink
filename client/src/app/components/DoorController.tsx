@@ -14,12 +14,13 @@ setInterval(() => {
 
 export default function DoorController() {
   const [doorStatus, setDoorStatus] = useState<boolean>(false);
+  const [doorAuto, setDoorAuto] = useState<boolean>(true);
 
   useEffect(() => {
     webSocket.onmessage = (event) => {
       if (event.data === "connection established") return;
-
       let { status } = JSON.parse(event.data);
+      console.log("STATUS: ", status);
       status == "door_open" ? setDoorStatus(true) : setDoorStatus(false);
     };
   }, []);
@@ -32,56 +33,43 @@ export default function DoorController() {
     webSocket.send(JSON.stringify({ cmd: command }));
     command == "door_open_manual" ? setDoorStatus(true) : setDoorStatus(false);
   };
+
+  const handleDoorAuto = () => {
+    const newDoorAuto = !doorAuto;
+    console.log("NEW DOOR AUTO STATUS", newDoorAuto);
+    if (newDoorAuto) {
+      console.log("TURN ON AUTO");
+      webSocket.send(JSON.stringify({ cmd: "door_operate_auto" }));
+    } else {
+      console.log("TURN OFF AUTO");
+      handleDoorManual(doorStatus ? "door_open_manual" : "door_closed_manual");
+    }
+    setDoorAuto(newDoorAuto);
+  };
   return (
     <div className="flex flex-col items-center gap-4">
-      <label className="relative inline-flex items-center cursor-pointer">
-        <input
-          type="checkbox"
-          value=""
-          className="sr-only peer"
-          checked={doorStatus}
-          disabled
-        />
-        <div
-          className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white   
-  
-after:content-[''] after:absolute after:top-[2px]   
-  
-after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600   
-  
-  
-peer-checked:after:bg-white peer-checked:after:border-blue-600"
-        ></div>
-        <span className="ml-3 text-lg font-medium text-gray-900 dark:text-gray-300">
-          {doorStatus ? "Door is Open" : "Door is Closed"}
-        </span>
-      </label>
-      <label className="relative inline-flex items-center cursor-pointer">
-        <input
-          type="checkbox"
-          value=""
-          className="sr-only peer"
-          checked={doorStatus}
-          onChange={() =>
-            handleDoorManual(
-              doorStatus ? "door_closed_manual" : "door_open_manual"
-            )
-          }
-        />
-        <div
-          className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white   
-  
-after:content-[''] after:absolute after:top-[2px]   
-  
-after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600   
-  
-  
-peer-checked:after:bg-white peer-checked:after:border-blue-600"
-        ></div>
-        <span className="ml-3 text-lg font-medium text-gray-900 dark:text-gray-300">
-          {doorStatus ? "Door is Open Manually" : "Door is Closed Manually"}
-        </span>
-      </label>
+      {doorStatus ? "DOOR IS OPEN" : "DOOR IS CLOSED"}
+      <button
+        className={`w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-md ${
+          doorStatus ? "bg-gray-300 text-gray-700" : ""
+        }`}
+        onClick={() =>
+          handleDoorManual(
+            doorStatus ? "door_closed_manual" : "door_open_manual"
+          )
+        }
+      >
+        {doorStatus ? "Close Door" : "Open Door"}
+      </button>
+
+      <button
+        className={`w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-md ${
+          doorAuto ? "bg-gray-300 text-gray-700" : ""
+        }`}
+        onClick={() => handleDoorAuto()}
+      >
+        {doorAuto ? "Manual Mode" : "Auto Mode"}
+      </button>
     </div>
   );
 }

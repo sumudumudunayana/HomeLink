@@ -19,8 +19,10 @@ class DoorStatusConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data=None, bytes_data=None):
         data = json.loads(text_data)
         cmd = data.get("cmd")
+
         channel_layer = get_channel_layer()
-        if cmd in ["door_open_manual", "door_closed_manual"]:
+        print("COMMAND RECIEVED FROM CLIENT: ", cmd)
+        if cmd in ["door_open_manual", "door_closed_manual", "door_operate_auto"]:
             component_status.set_door_status(True)
             await channel_layer.group_send(
                 "esp_32_event_group",
