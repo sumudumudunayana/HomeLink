@@ -65,6 +65,9 @@ void setup() {
 }
 
 void loop() {
+  if(!client.available()) {
+        client.connect(websockets_server);
+  }
   client.poll();
 
   String cmdStr = Serial2.readString();
