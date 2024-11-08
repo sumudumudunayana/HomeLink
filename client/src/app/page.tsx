@@ -1,11 +1,13 @@
 import DeviceController from "./components/DeviceController";
 const Index = () => {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">
-        Home Link Dashboard
+    <div className="h-screen grid grid-flow-col grid-rows-12 w-screen px-4 py-8">
+      <h1 className="row-span-1 text-4xl font-bold text-start w-5/6 mx-auto pb-5 text-white  text-slate-950 rounded-lg">
+        HOMELINK DASHBOARD
       </h1>
-      <DeviceController />
+      <div className="row-span-11">
+        <DeviceController />
+      </div>
     </div>
   );
 };
