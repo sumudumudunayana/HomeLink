@@ -449,7 +449,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
     return (
       <div className="grid grid-flow-col grid-rows-4 bg-slate-900 bg-opacity-10 shadow-lg  h-full rounded-md backdrop-blur-lg bg-white/12">
         <span className="grid grid-flow-row grid-cols-4 w-full">
-          <h1 className="m-8 col-span-3 text-5xl font-bold text-emerald-400 rounded-lg">
+          <h1 className="m-8 col-span-3 text-5xl font-bold text-lime-200 rounded-lg">
             SmartBin
           </h1>
           <span className="align-end m-8">
@@ -487,7 +487,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </span>
         </span>
         <span className="row-span-3 m-8 text-start">
-          <h1 className="text-2xl font-bold text-slate-900 rounded-lg">
+          <h1 className="text-2xl font-bold text-white rounded-lg">
             Introducing the Smart Dustbin: A Hands-Free Hygiene Solution
           </h1>
           <br />
@@ -500,7 +500,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </p>
           <br />
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-slate-900 rounded-lg">
+            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
               Auto Mode
             </h1>
             <span className="w-full text-center">
@@ -508,7 +508,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
             </span>
           </span>
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-slate-900 rounded-lg">
+            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
               State
             </h1>
             <span className="w-full text-center">
@@ -523,7 +523,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
     return (
       <div className="grid grid-flow-col grid-rows-4 bg-slate-900 bg-opacity-10 shadow-lg  h-full rounded-md backdrop-blur-lg bg-white/12">
         <span className="grid grid-flow-row grid-cols-4 w-full">
-          <h1 className="m-8 col-span-3 text-5xl font-bold text-amber-400 rounded-lg">
+          <h1 className="m-8 col-span-3 text-5xl font-bold text-lime-200 rounded-lg">
             SmartLight
           </h1>
           <span className="align-end m-8">
@@ -561,7 +561,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </span>
         </span>
         <span className="row-span-3 m-8 text-start">
-          <h1 className="text-2xl font-bold text-slate-900 rounded-lg">
+          <h1 className="text-2xl font-bold text-white rounded-lg">
             Smart Lighting: Illuminate Your Space, Naturally
           </h1>
           <br />
@@ -574,7 +574,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </p>
           <br />
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-slate-900 rounded-lg">
+            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
               Auto Mode
             </h1>
             <span className="w-full text-center">
@@ -582,7 +582,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
             </span>
           </span>
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-slate-900 rounded-lg">
+            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
               State
             </h1>
             <span className="w-full text-center">
@@ -597,7 +597,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
     return (
       <div className="grid grid-flow-col grid-rows-4 bg-slate-900 bg-opacity-10 shadow-lg h-full rounded-md backdrop-blur-lg bg-white/12">
         <span className="grid grid-flow-row grid-cols-4 w-full">
-          <h1 className="m-8 col-span-3 text-5xl font-bold text-rose-300 rounded-lg">
+          <h1 className="m-8 col-span-3 text-5xl font-bold text-lime-200 rounded-lg">
             Shield
           </h1>
           <span className="align-end m-8">
@@ -635,7 +635,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </span>
         </span>
         <span className="row-span-3 m-8 text-start">
-          <h1 className="text-2xl font-bold text-slate-900 rounded-lg">
+          <h1 className="text-2xl font-bold text-white rounded-lg">
             Your Home, Your Security: A Smart Alarm System
           </h1>
           <br />
@@ -648,7 +648,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </p>
           <br />
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-slate-900 rounded-lg">
+            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
               State
             </h1>
             <span className="w-full text-center">
@@ -663,7 +663,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
     return (
       <div className="grid grid-flow-col grid-rows-4 bg-slate-900 bg-opacity-10 shadow-lg h-full rounded-md backdrop-blur-lg bg-white/12">
         <span className="grid grid-flow-row grid-cols-4 w-full">
-          <h1 className="m-8 col-span-3 text-5xl font-bold text-sky-400 rounded-lg">
+          <h1 className="m-8 col-span-3 text-5xl font-bold text-lime-200 rounded-lg">
             SmartFan
           </h1>
           <span className="align-end m-8">
@@ -701,7 +701,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </span>
         </span>
         <span className="row-span-3 m-8 text-start">
-          <h1 className="text-2xl font-bold text-slate-900 rounded-lg">
+          <h1 className="text-2xl font-bold text-white rounded-lg">
             Smart Fan: Cool Comfort, Optimized
           </h1>
           <br />
@@ -713,7 +713,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </p>
           <br />
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-slate-900 rounded-lg">
+            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
               Auto Mode
             </h1>
             <span className="w-full text-center">
@@ -721,7 +721,7 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
             </span>
           </span>
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-slate-900 rounded-lg">
+            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
               State
             </h1>
             <span className="w-full text-center">
@@ -733,22 +733,6 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
     );
   }
   return (
-    <div className="grid grid-cols-8 bg-slate-900 bg-opacity-10 shadow-lg h-full rounded-md backdrop-blur-lg bg-white/12">
-      <h1 className="m-8 col-span-2 h-full text-center align-center text-5xl font-bold text-sky-400 rounded-lg">
-        <HomeIcon />
-      </h1>
-      <span className="m-8 col-span-6 text-start">
-        <h1 className="text-5xl font-bold text-green-400 rounded-lg">
-          Gaia: Your Intelligent Home
-        </h1>
-        <br />
-        <p className="text-lg">
-          Gaia is a cutting-edge home automation system that simplifies your
-          life. Control your home with voice commands, personalize your
-          environment, save energy, enhance security, and enjoy a seamless user
-          experience.
-        </p>
-      </span>
-    </div>
+    <div className="grid grid-cols-8 bg-black bg-opacity-30 shadow-lg h-full rounded-md backdrop-blur-lg bg-black/15"></div>
   );
 };

@@ -15,17 +15,17 @@ export const Switch = ({ isChecked, setIsChecked }) => {
         />
         <span
           className={`slider mr-3 flex h-[26px] w-[50px] items-center rounded-full p-1 duration-200 ${
-            isChecked ? "bg-green-400" : "bg-[#CCCCCE]"
+            isChecked ? "bg-lime-200" : "bg-[#CCCCCE]"
           }`}
         >
           <span
-            className={`dot h-[18px] w-[18px] rounded-full bg-white duration-200 ${
+            className={`dot h-[18px] w-[18px] rounded-full bg-slate-900 duration-200 ${
               isChecked ? "translate-x-6" : ""
             }`}
           ></span>
         </span>
-        <span className="label flex items-center text-sm font-medium text-black">
-          <span className="text-xl font-bold text-slate-900 pl-3">
+        <span className="label flex items-center text-sm font-medium text-white">
+          <span className="text-xl font-bold text-white pl-3">
             {isChecked ? "ON" : "OFF"}{" "}
           </span>
         </span>
