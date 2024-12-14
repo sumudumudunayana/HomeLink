@@ -137,7 +137,7 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
       stateCommands: { on: "light_on_manual", off: "light_off_manual" },
     },
     alarm: {
-      title: "Shield",
+      title: "SmartShield",
       description: {
         heading: "Your Home, Your Security: A Smart Alarm System",
         body: `Take control of your home's security with our user-friendly alarm system. 
