@@ -39,7 +39,7 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
 
   const toggleState = (command: string) => {
     sendCommand(command);
-    setIsChecked(command.includes("on"));
+    setIsChecked(command.includes("on") || command.includes("open"));
   };
 
   const getDeviceContent = (
