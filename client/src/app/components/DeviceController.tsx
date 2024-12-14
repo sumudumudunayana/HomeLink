@@ -48,29 +48,6 @@ export default function DeviceController() {
     };
   }, []);
 
-  const handleSetDoorStatus = (value: boolean) => {
-    setDoorStatus(value);
-  };
-  const handleSetDoorAuto = (value: boolean) => {
-    setDoorAuto(value);
-  };
-
-  const handleSetLightStatus = (value: boolean) => {
-    setLightStatus(value);
-  };
-  const handleSetLightAuto = (value: boolean) => {
-    setLightAuto(value);
-  };
-  const handleSetAlarmStatus = (value: boolean) => {
-    setAlarmStatus(value);
-  };
-  const handleSetFanStatus = (value: boolean) => {
-    setFanStatus(value);
-  };
-  const handleSetFanAuto = (value: boolean) => {
-    setFanAuto(value);
-  };
-
   const getSettingsProps = () => {
     if (selectedDevice == "door") {
       return {
@@ -167,11 +144,11 @@ export default function DeviceController() {
               xmlns="http://www.w3.org/2000/svg"
             >
               <title>eye_2_fill</title>
-              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g
                   id="Part"
                   transform="translate(-144.000000, -48.000000)"
-                  fill-rule="nonzero"
+                  fillRule="nonzero"
                 >
                   <g
                     id="eye_2_fill"
@@ -179,7 +156,7 @@ export default function DeviceController() {
                   >
                     <path
                       d="M24,0 L24,24 L0,24 L0,0 L24,0 Z M12.5934901,23.257841 L12.5819402,23.2595131 L12.5108777,23.2950439 L12.4918791,23.2987469 L12.4918791,23.2987469 L12.4767152,23.2950439 L12.4056548,23.2595131 C12.3958229,23.2563662 12.3870493,23.2590235 12.3821421,23.2649074 L12.3780323,23.275831 L12.360941,23.7031097 L12.3658947,23.7234994 L12.3769048,23.7357139 L12.4804777,23.8096931 L12.4953491,23.8136134 L12.4953491,23.8136134 L12.5071152,23.8096931 L12.6106902,23.7357139 L12.6232938,23.7196733 L12.6232938,23.7196733 L12.6266527,23.7031097 L12.609561,23.275831 C12.6075724,23.2657013 12.6010112,23.2592993 12.5934901,23.257841 L12.5934901,23.257841 Z M12.8583906,23.1452862 L12.8445485,23.1473072 L12.6598443,23.2396597 L12.6498822,23.2499052 L12.6498822,23.2499052 L12.6471943,23.2611114 L12.6650943,23.6906389 L12.6699349,23.7034178 L12.6699349,23.7034178 L12.678386,23.7104931 L12.8793402,23.8032389 C12.8914285,23.8068999 12.9022333,23.8029875 12.9078286,23.7952264 L12.9118235,23.7811639 L12.8776777,23.1665331 C12.8752882,23.1545897 12.8674102,23.1470016 12.8583906,23.1452862 L12.8583906,23.1452862 Z M12.1430473,23.1473072 C12.1332178,23.1423925 12.1221763,23.1452606 12.1156365,23.1525954 L12.1099173,23.1665331 L12.0757714,23.7811639 C12.0751323,23.7926639 12.0828099,23.8018602 12.0926481,23.8045676 L12.108256,23.8032389 L12.3092106,23.7104931 L12.3186497,23.7024347 L12.3186497,23.7024347 L12.3225043,23.6906389 L12.340401,23.2611114 L12.337245,23.2485176 L12.337245,23.2485176 L12.3277531,23.2396597 L12.1430473,23.1473072 Z"
-                      fill-rule="nonzero"
+                      fillRule="nonzero"
                     ></path>
                     <path
                       d="M12,5 C15.6786,5 20.1621,7.41663 21.7292,10.9014 C21.8765,11.229 22,11.6119 22,12 C22,12.3881 21.8765,12.771 21.7292,13.0986 C20.1621,16.5834 15.6786,19 12,19 C8.32138,19 3.83788,16.5834 2.27082,13.0986 C2.12348,12.771 2,12.3881 2,12 C2,11.6119 2.12348,11.229 2.27082,10.9014 C3.83789,7.41663 8.32138,5 12,5 Z M12,8 C9.79086,8 8,9.79086 8,12 C8,14.2091 9.79086,16 12,16 C14.2091,16 16,14.2091 16,12 C16,9.79086 14.2091,8 12,8 Z M12,10 C13.1046,10 14,10.8954 14,12 C14,13.1046 13.1046,14 12,14 C10.8954,14 10,13.1046 10,12 C10,10.8954 10.8954,10 12,10 Z"
@@ -226,232 +203,73 @@ export default function DeviceController() {
       </div>
       <WeatherReport />
     </div>
-    // <div className="w-36">
-    //   <DoorController
-    //     handleSetDoorStatus={handleSetDoorStatus}
-    //     doorStatus={doorStatus}
-    //     handleSetDoorAuto={handleSetDoorAuto}
-    //     doorAuto={doorAuto}
-    //   />
-    //   <br />
-    //   <LightController
-    //     handleSetLightStatus={handleSetLightStatus}
-    //     lightStatus={lightStatus}
-    //     handleSetLightAuto={handleSetLightAuto}
-    //     lightAuto={lightAuto}
-    //   />
-    //   <br />
-    //   <AlarmController
-    //     handleSetAlarmStatus={handleSetAlarmStatus}
-    //     alarmStatus={alarmStatus}
-    //   />
-    //   <br />
-    //   <FanController
-    //     handleSetFanStatus={handleSetFanStatus}
-    //     fanStatus={fanStatus}
-    //     handleSetFanAuto={handleSetFanAuto}
-    //     fanAuto={fanAuto}
-    //   />
-    // </div>
-  );
-}
-
-function DoorController({
-  handleSetDoorStatus,
-  doorStatus,
-  handleSetDoorAuto,
-  doorAuto,
-}) {
-  const handleDoor = (command: string) => {
-    webSocket.send(JSON.stringify({ cmd: command }));
-    command == "door_open"
-      ? handleSetDoorStatus(true)
-      : handleSetDoorStatus(false);
-  };
-  const handleDoorManual = (command: string) => {
-    webSocket.send(JSON.stringify({ cmd: command }));
-    command == "door_open_manual"
-      ? handleSetDoorStatus(true)
-      : handleSetDoorStatus(false);
-  };
-
-  const handleDoorAuto = () => {
-    const newDoorAuto = !doorAuto;
-    if (newDoorAuto) {
-      webSocket.send(JSON.stringify({ cmd: "door_operate_auto" }));
-    } else {
-      handleDoorManual(doorStatus ? "door_open_manual" : "door_closed_manual");
-    }
-    handleSetDoorAuto(newDoorAuto);
-  };
-  return (
-    <div className="flex flex-col items-center gap-4">
-      {doorStatus ? "DOOR IS OPEN" : "DOOR IS CLOSED"}
-      <button
-        className={`w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-md ${
-          doorStatus ? "bg-gray-300 text-gray-700" : ""
-        }`}
-        onClick={() =>
-          handleDoorManual(
-            doorStatus ? "door_closed_manual" : "door_open_manual"
-          )
-        }
-      >
-        {doorStatus ? "Close Door" : "Open Door"}
-      </button>
-
-      <button
-        className={`w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-md ${
-          doorAuto ? "bg-gray-300 text-gray-700" : ""
-        }`}
-        onClick={() => handleDoorAuto()}
-      >
-        {doorAuto ? "Manual Mode" : "Auto Mode"}
-      </button>
-    </div>
-  );
-}
-
-function LightController({
-  handleSetLightStatus,
-  lightStatus,
-  handleSetLightAuto,
-  lightAuto,
-}) {
-  const handleLight = (command: string) => {
-    webSocket.send(JSON.stringify({ cmd: command }));
-    command == "light_on"
-      ? handleSetLightStatus(true)
-      : handleSetLightStatus(false);
-  };
-  const handleLightManual = (command: string) => {
-    webSocket.send(JSON.stringify({ cmd: command }));
-    command == "light_on_manual"
-      ? handleSetLightStatus(true)
-      : handleSetLightStatus(false);
-  };
-
-  const handleLightAuto = () => {
-    const newLightAuto = !lightAuto;
-    if (newLightAuto) {
-      webSocket.send(JSON.stringify({ cmd: "light_operate_auto" }));
-    } else {
-      handleLightManual(lightStatus ? "light_on_manual" : "light_off_manual");
-    }
-    handleSetLightAuto(newLightAuto);
-  };
-  return (
-    <div className="flex flex-col items-center gap-4">
-      {lightStatus ? "LIGHT IS ON" : "LIGHT IS OFF"}
-      <button
-        className={`w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-md ${
-          lightStatus ? "bg-gray-300 text-gray-700" : ""
-        }`}
-        onClick={() =>
-          handleLightManual(
-            lightStatus ? "light_off_manual" : "light_on_manual"
-          )
-        }
-      >
-        {lightStatus ? "Turn off Light" : "Turn on Light"}
-      </button>
-
-      <button
-        className={`w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-md ${
-          lightAuto ? "bg-gray-300 text-gray-700" : ""
-        }`}
-        onClick={() => handleLightAuto()}
-      >
-        {lightAuto ? "Manual Mode" : "Auto Mode"}
-      </button>
-    </div>
-  );
-}
-
-function AlarmController({ handleSetAlarmStatus, alarmStatus }) {
-  const handleAlarmManual = (command: string) => {
-    webSocket.send(JSON.stringify({ cmd: command }));
-    command == "alarm_on"
-      ? handleSetAlarmStatus(true)
-      : handleSetAlarmStatus(false);
-  };
-  return (
-    <div className="flex flex-col items-center gap-4">
-      {alarmStatus ? "ALARM IS ON" : "ALARM IS OFF"}
-      <button
-        className={`w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-md ${
-          alarmStatus ? "bg-gray-300 text-gray-700" : ""
-        }`}
-        onClick={() =>
-          handleAlarmManual(alarmStatus ? "alarm_off" : "alarm_on")
-        }
-      >
-        {alarmStatus ? "Turn off Alarm" : "Turn on Alarm"}
-      </button>
-    </div>
-  );
-}
-
-function FanController({
-  handleSetFanStatus,
-  fanStatus,
-  handleSetFanAuto,
-  fanAuto,
-}) {
-  const handleFan = (command: string) => {
-    webSocket.send(JSON.stringify({ cmd: command }));
-    command == "fan_on" ? handleSetFanStatus(true) : handleSetFanStatus(false);
-  };
-  const handleFanManual = (command: string) => {
-    webSocket.send(JSON.stringify({ cmd: command }));
-    command == "fan_on_manual"
-      ? handleSetFanStatus(true)
-      : handleSetFanStatus(false);
-  };
-
-  const handleFanAuto = () => {
-    const newFanAuto = !fanAuto;
-    if (newFanAuto) {
-      webSocket.send(JSON.stringify({ cmd: "fan_operate_auto" }));
-    } else {
-      handleFanManual(fanStatus ? "fan_on_manual" : "fan_off_manual");
-    }
-    handleSetFanAuto(newFanAuto);
-  };
-  return (
-    <div className="flex flex-col items-center gap-4">
-      {fanStatus ? "FAN IS ON" : "FAN IS OFF"}
-      <button
-        className={`w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-md ${
-          fanStatus ? "bg-gray-300 text-gray-700" : ""
-        }`}
-        onClick={() =>
-          handleFanManual(fanStatus ? "fan_off_manual" : "fan_on_manual")
-        }
-      >
-        {fanStatus ? "Turn off Fan" : "Turn on Fan"}
-      </button>
-
-      <button
-        className={`w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-md ${
-          fanAuto ? "bg-gray-300 text-gray-700" : ""
-        }`}
-        onClick={() => handleFanAuto()}
-      >
-        {fanAuto ? "Manual Mode" : "Auto Mode"}
-      </button>
-    </div>
   );
 }
 
 const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
+  const handleDoor = (command: string) => {
+    webSocket.send(JSON.stringify({ cmd: command }));
+    command == "door_open" ? setIsChecked(true) : setIsChecked(false);
+  };
+  const handleDoorManual = (command: string) => {
+    webSocket.send(JSON.stringify({ cmd: command }));
+    command == "door_open_manual" ? setIsChecked(true) : setIsChecked(false);
+  };
+  const handleDoorAuto = () => {
+    const newDoorAuto = !isAuto;
+    if (newDoorAuto) {
+      webSocket.send(JSON.stringify({ cmd: "door_operate_auto" }));
+    } else {
+      handleDoorManual(isChecked ? "door_open_manual" : "door_closed_manual");
+    }
+    setAuto(newDoorAuto);
+  };
+  const handleLight = (command: string) => {
+    webSocket.send(JSON.stringify({ cmd: command }));
+    command == "light_on" ? setIsChecked(true) : setIsChecked(false);
+  };
+  const handleLightManual = (command: string) => {
+    webSocket.send(JSON.stringify({ cmd: command }));
+    command == "light_on_manual" ? setIsChecked(true) : setIsChecked(false);
+  };
+  const handleLightAuto = () => {
+    const newLightAuto = !isAuto;
+    if (newLightAuto) {
+      webSocket.send(JSON.stringify({ cmd: "light_operate_auto" }));
+    } else {
+      handleLightManual(isChecked ? "light_on_manual" : "light_off_manual");
+    }
+    setAuto(newLightAuto);
+  };
+  const handleAlarmManual = (command: string) => {
+    webSocket.send(JSON.stringify({ cmd: command }));
+    command == "alarm_on" ? setIsChecked(true) : setIsChecked(false);
+  };
+  const handleFan = (command: string) => {
+    webSocket.send(JSON.stringify({ cmd: command }));
+    command == "fan_on" ? setIsChecked(true) : setIsChecked(false);
+  };
+  const handleFanManual = (command: string) => {
+    webSocket.send(JSON.stringify({ cmd: command }));
+    command == "fan_on_manual" ? setIsChecked(true) : setIsChecked(false);
+  };
+
+  const handleFanAuto = () => {
+    const newFanAuto = !isAuto;
+    if (newFanAuto) {
+      webSocket.send(JSON.stringify({ cmd: "fan_operate_auto" }));
+    } else {
+      handleFanManual(isChecked ? "fan_on_manual" : "fan_off_manual");
+    }
+    setAuto(newFanAuto);
+  };
   if (device == "door") {
     return (
       <div className="grid grid-flow-col grid-rows-4 bg-slate-900 bg-opacity-10 shadow-lg  h-full rounded-md backdrop-blur-lg bg-white/12">
         <span className="grid grid-flow-row grid-cols-4 w-full">
-          <h1 className="m-8 col-span-3 text-5xl font-bold text-lime-200 rounded-lg">
+          <h2 className="m-8 col-span-3 text-5xl font-bold text-lime-200 rounded-lg">
             SmartBin
-          </h1>
+          </h2>
           <span className="align-end m-8">
             <span className="w-5 h-5">
               <svg
@@ -465,20 +283,20 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
                   fill="#fff"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M10.75 9.5C10.75 8.80964 11.3097 8.25 12 8.25C12.6904 8.25 13.25 8.80964 13.25 9.5C13.25 10.1904 12.6904 10.75 12 10.75C11.3097 10.75 10.75 10.1904 10.75 9.5Z"
                   fill="#fff"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M20.75 10.9605L21.5315 11.5857C21.855 11.8444 22.3269 11.792 22.5857 11.4685C22.8444 11.1451 22.792 10.6731 22.4685 10.4143L14.3426 3.91362C12.9731 2.81796 11.027 2.81796 9.65742 3.91362L1.53151 10.4143C1.20806 10.6731 1.15562 11.1451 1.41438 11.4685C1.67313 11.792 2.1451 11.8444 2.46855 11.5857L3.25003 10.9605V21.25H2.00003C1.58581 21.25 1.25003 21.5858 1.25003 22C1.25003 22.4142 1.58581 22.75 2.00003 22.75H22C22.4142 22.75 22.75 22.4142 22.75 22C22.75 21.5858 22.4142 21.25 22 21.25H20.75V10.9605ZM9.25003 9.5C9.25003 7.98122 10.4812 6.75 12 6.75C13.5188 6.75 14.75 7.98122 14.75 9.5C14.75 11.0188 13.5188 12.25 12 12.25C10.4812 12.25 9.25003 11.0188 9.25003 9.5ZM12.0494 13.25C12.7143 13.25 13.2871 13.2499 13.7459 13.3116C14.2375 13.3777 14.7088 13.5268 15.091 13.909C15.4733 14.2913 15.6223 14.7625 15.6884 15.2542C15.7462 15.6842 15.7498 16.2146 15.75 16.827C15.75 16.8679 15.75 16.9091 15.75 16.9506L15.75 21.25H14.25V17C14.25 16.2717 14.2484 15.8009 14.2018 15.454C14.1581 15.1287 14.0875 15.0268 14.0304 14.9697C13.9733 14.9126 13.8713 14.842 13.546 14.7982C13.1991 14.7516 12.7283 14.75 12 14.75C11.2717 14.75 10.8009 14.7516 10.4541 14.7982C10.1288 14.842 10.0268 14.9126 9.9697 14.9697C9.9126 15.0268 9.84199 15.1287 9.79826 15.454C9.75162 15.8009 9.75003 16.2717 9.75003 17V21.25H8.25003L8.25003 16.9506C8.24999 16.2858 8.24996 15.7129 8.31163 15.2542C8.37773 14.7625 8.52679 14.2913 8.90904 13.909C9.29128 13.5268 9.76255 13.3777 10.2542 13.3116C10.7129 13.2499 11.2858 13.25 11.9507 13.25H12.0494Z"
                   fill="#fff"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M10.75 9.5C10.75 8.80964 11.3097 8.25 12 8.25C12.6904 8.25 13.25 8.80964 13.25 9.5C13.25 10.1904 12.6904 10.75 12 10.75C11.3097 10.75 10.75 10.1904 10.75 9.5Z"
                   fill="#fff"
                 />
@@ -487,9 +305,9 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </span>
         </span>
         <span className="row-span-3 m-8 text-start">
-          <h1 className="text-2xl font-bold text-white rounded-lg">
+          <h2 className="text-2xl font-bold text-white rounded-lg">
             Introducing the Smart Dustbin: A Hands-Free Hygiene Solution
-          </h1>
+          </h2>
           <br />
           <p>
             Our Smart Dustbin is a hygienic and convenient solution for waste
@@ -500,19 +318,23 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </p>
           <br />
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
+            <h2 className="col-span-2 text-xl font-bold text-white rounded-lg">
               Auto Mode
-            </h1>
+            </h2>
             <span className="w-full text-center">
-              <Switch setIsChecked={setAuto} isChecked={isAuto} />
+              <Switch setIsChecked={handleDoorAuto} isChecked={isAuto} />
             </span>
           </span>
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
+            <h2 className="col-span-2 text-xl font-bold text-white rounded-lg">
               State
-            </h1>
+            </h2>
             <span className="w-full text-center">
-              <Switch setIsChecked={setIsChecked} isChecked={isChecked} />
+              <Switch
+                setIsChecked={handleDoorManual}
+                isChecked={isChecked}
+                cmds={["door_closed_manual", "door_open_manual"]}
+              />
             </span>
           </span>
         </span>
@@ -523,9 +345,9 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
     return (
       <div className="grid grid-flow-col grid-rows-4 bg-slate-900 bg-opacity-10 shadow-lg  h-full rounded-md backdrop-blur-lg bg-white/12">
         <span className="grid grid-flow-row grid-cols-4 w-full">
-          <h1 className="m-8 col-span-3 text-5xl font-bold text-lime-200 rounded-lg">
+          <h2 className="m-8 col-span-3 text-5xl font-bold text-lime-200 rounded-lg">
             SmartLight
-          </h1>
+          </h2>
           <span className="align-end m-8">
             <span className="w-5 h-5">
               <svg
@@ -539,20 +361,20 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
                   fill="#fff"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M10.75 9.5C10.75 8.80964 11.3097 8.25 12 8.25C12.6904 8.25 13.25 8.80964 13.25 9.5C13.25 10.1904 12.6904 10.75 12 10.75C11.3097 10.75 10.75 10.1904 10.75 9.5Z"
                   fill="#fff"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M20.75 10.9605L21.5315 11.5857C21.855 11.8444 22.3269 11.792 22.5857 11.4685C22.8444 11.1451 22.792 10.6731 22.4685 10.4143L14.3426 3.91362C12.9731 2.81796 11.027 2.81796 9.65742 3.91362L1.53151 10.4143C1.20806 10.6731 1.15562 11.1451 1.41438 11.4685C1.67313 11.792 2.1451 11.8444 2.46855 11.5857L3.25003 10.9605V21.25H2.00003C1.58581 21.25 1.25003 21.5858 1.25003 22C1.25003 22.4142 1.58581 22.75 2.00003 22.75H22C22.4142 22.75 22.75 22.4142 22.75 22C22.75 21.5858 22.4142 21.25 22 21.25H20.75V10.9605ZM9.25003 9.5C9.25003 7.98122 10.4812 6.75 12 6.75C13.5188 6.75 14.75 7.98122 14.75 9.5C14.75 11.0188 13.5188 12.25 12 12.25C10.4812 12.25 9.25003 11.0188 9.25003 9.5ZM12.0494 13.25C12.7143 13.25 13.2871 13.2499 13.7459 13.3116C14.2375 13.3777 14.7088 13.5268 15.091 13.909C15.4733 14.2913 15.6223 14.7625 15.6884 15.2542C15.7462 15.6842 15.7498 16.2146 15.75 16.827C15.75 16.8679 15.75 16.9091 15.75 16.9506L15.75 21.25H14.25V17C14.25 16.2717 14.2484 15.8009 14.2018 15.454C14.1581 15.1287 14.0875 15.0268 14.0304 14.9697C13.9733 14.9126 13.8713 14.842 13.546 14.7982C13.1991 14.7516 12.7283 14.75 12 14.75C11.2717 14.75 10.8009 14.7516 10.4541 14.7982C10.1288 14.842 10.0268 14.9126 9.9697 14.9697C9.9126 15.0268 9.84199 15.1287 9.79826 15.454C9.75162 15.8009 9.75003 16.2717 9.75003 17V21.25H8.25003L8.25003 16.9506C8.24999 16.2858 8.24996 15.7129 8.31163 15.2542C8.37773 14.7625 8.52679 14.2913 8.90904 13.909C9.29128 13.5268 9.76255 13.3777 10.2542 13.3116C10.7129 13.2499 11.2858 13.25 11.9507 13.25H12.0494Z"
                   fill="#fff"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M10.75 9.5C10.75 8.80964 11.3097 8.25 12 8.25C12.6904 8.25 13.25 8.80964 13.25 9.5C13.25 10.1904 12.6904 10.75 12 10.75C11.3097 10.75 10.75 10.1904 10.75 9.5Z"
                   fill="#fff"
                 />
@@ -561,9 +383,9 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </span>
         </span>
         <span className="row-span-3 m-8 text-start">
-          <h1 className="text-2xl font-bold text-white rounded-lg">
+          <h2 className="text-2xl font-bold text-white rounded-lg">
             Smart Lighting: Illuminate Your Space, Naturally
-          </h1>
+          </h2>
           <br />
           <p>
             Our Smart Lighting system intelligently adjusts the room’s lighting
@@ -574,19 +396,23 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </p>
           <br />
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
+            <h2 className="col-span-2 text-xl font-bold text-white rounded-lg">
               Auto Mode
-            </h1>
+            </h2>
             <span className="w-full text-center">
-              <Switch setIsChecked={setAuto} isChecked={isAuto} />
+              <Switch setIsChecked={handleLightAuto} isChecked={isAuto} />
             </span>
           </span>
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
+            <h2 className="col-span-2 text-xl font-bold text-white rounded-lg">
               State
-            </h1>
+            </h2>
             <span className="w-full text-center">
-              <Switch setIsChecked={setIsChecked} isChecked={isChecked} />
+              <Switch
+                setIsChecked={handleLightManual}
+                isChecked={isChecked}
+                cmds={["light_off_manual", "light_on_manual"]}
+              />
             </span>
           </span>
         </span>
@@ -597,9 +423,9 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
     return (
       <div className="grid grid-flow-col grid-rows-4 bg-slate-900 bg-opacity-10 shadow-lg h-full rounded-md backdrop-blur-lg bg-white/12">
         <span className="grid grid-flow-row grid-cols-4 w-full">
-          <h1 className="m-8 col-span-3 text-5xl font-bold text-lime-200 rounded-lg">
+          <h2 className="m-8 col-span-3 text-5xl font-bold text-lime-200 rounded-lg">
             Shield
-          </h1>
+          </h2>
           <span className="align-end m-8">
             <span className="w-5 h-5">
               <svg
@@ -613,20 +439,20 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
                   fill="#fff"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M10.75 9.5C10.75 8.80964 11.3097 8.25 12 8.25C12.6904 8.25 13.25 8.80964 13.25 9.5C13.25 10.1904 12.6904 10.75 12 10.75C11.3097 10.75 10.75 10.1904 10.75 9.5Z"
                   fill="#fff"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M20.75 10.9605L21.5315 11.5857C21.855 11.8444 22.3269 11.792 22.5857 11.4685C22.8444 11.1451 22.792 10.6731 22.4685 10.4143L14.3426 3.91362C12.9731 2.81796 11.027 2.81796 9.65742 3.91362L1.53151 10.4143C1.20806 10.6731 1.15562 11.1451 1.41438 11.4685C1.67313 11.792 2.1451 11.8444 2.46855 11.5857L3.25003 10.9605V21.25H2.00003C1.58581 21.25 1.25003 21.5858 1.25003 22C1.25003 22.4142 1.58581 22.75 2.00003 22.75H22C22.4142 22.75 22.75 22.4142 22.75 22C22.75 21.5858 22.4142 21.25 22 21.25H20.75V10.9605ZM9.25003 9.5C9.25003 7.98122 10.4812 6.75 12 6.75C13.5188 6.75 14.75 7.98122 14.75 9.5C14.75 11.0188 13.5188 12.25 12 12.25C10.4812 12.25 9.25003 11.0188 9.25003 9.5ZM12.0494 13.25C12.7143 13.25 13.2871 13.2499 13.7459 13.3116C14.2375 13.3777 14.7088 13.5268 15.091 13.909C15.4733 14.2913 15.6223 14.7625 15.6884 15.2542C15.7462 15.6842 15.7498 16.2146 15.75 16.827C15.75 16.8679 15.75 16.9091 15.75 16.9506L15.75 21.25H14.25V17C14.25 16.2717 14.2484 15.8009 14.2018 15.454C14.1581 15.1287 14.0875 15.0268 14.0304 14.9697C13.9733 14.9126 13.8713 14.842 13.546 14.7982C13.1991 14.7516 12.7283 14.75 12 14.75C11.2717 14.75 10.8009 14.7516 10.4541 14.7982C10.1288 14.842 10.0268 14.9126 9.9697 14.9697C9.9126 15.0268 9.84199 15.1287 9.79826 15.454C9.75162 15.8009 9.75003 16.2717 9.75003 17V21.25H8.25003L8.25003 16.9506C8.24999 16.2858 8.24996 15.7129 8.31163 15.2542C8.37773 14.7625 8.52679 14.2913 8.90904 13.909C9.29128 13.5268 9.76255 13.3777 10.2542 13.3116C10.7129 13.2499 11.2858 13.25 11.9507 13.25H12.0494Z"
                   fill="#fff"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M10.75 9.5C10.75 8.80964 11.3097 8.25 12 8.25C12.6904 8.25 13.25 8.80964 13.25 9.5C13.25 10.1904 12.6904 10.75 12 10.75C11.3097 10.75 10.75 10.1904 10.75 9.5Z"
                   fill="#fff"
                 />
@@ -635,9 +461,9 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </span>
         </span>
         <span className="row-span-3 m-8 text-start">
-          <h1 className="text-2xl font-bold text-white rounded-lg">
+          <h2 className="text-2xl font-bold text-white rounded-lg">
             Your Home, Your Security: A Smart Alarm System
-          </h1>
+          </h2>
           <br />
           <p>
             Take control of your home's security with our user-friendly alarm
@@ -648,11 +474,15 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </p>
           <br />
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
+            <h2 className="col-span-2 text-xl font-bold text-white rounded-lg">
               State
-            </h1>
+            </h2>
             <span className="w-full text-center">
-              <Switch setIsChecked={setIsChecked} isChecked={isChecked} />
+              <Switch
+                setIsChecked={handleAlarmManual}
+                isChecked={isChecked}
+                cmds={["alarm_off", "alarm_on"]}
+              />
             </span>
           </span>
         </span>
@@ -663,9 +493,9 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
     return (
       <div className="grid grid-flow-col grid-rows-4 bg-slate-900 bg-opacity-10 shadow-lg h-full rounded-md backdrop-blur-lg bg-white/12">
         <span className="grid grid-flow-row grid-cols-4 w-full">
-          <h1 className="m-8 col-span-3 text-5xl font-bold text-lime-200 rounded-lg">
+          <h2 className="m-8 col-span-3 text-5xl font-bold text-lime-200 rounded-lg">
             SmartFan
-          </h1>
+          </h2>
           <span className="align-end m-8">
             <span className="w-5 h-5">
               <svg
@@ -679,20 +509,20 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
                   fill="#fff"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M10.75 9.5C10.75 8.80964 11.3097 8.25 12 8.25C12.6904 8.25 13.25 8.80964 13.25 9.5C13.25 10.1904 12.6904 10.75 12 10.75C11.3097 10.75 10.75 10.1904 10.75 9.5Z"
                   fill="#fff"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M20.75 10.9605L21.5315 11.5857C21.855 11.8444 22.3269 11.792 22.5857 11.4685C22.8444 11.1451 22.792 10.6731 22.4685 10.4143L14.3426 3.91362C12.9731 2.81796 11.027 2.81796 9.65742 3.91362L1.53151 10.4143C1.20806 10.6731 1.15562 11.1451 1.41438 11.4685C1.67313 11.792 2.1451 11.8444 2.46855 11.5857L3.25003 10.9605V21.25H2.00003C1.58581 21.25 1.25003 21.5858 1.25003 22C1.25003 22.4142 1.58581 22.75 2.00003 22.75H22C22.4142 22.75 22.75 22.4142 22.75 22C22.75 21.5858 22.4142 21.25 22 21.25H20.75V10.9605ZM9.25003 9.5C9.25003 7.98122 10.4812 6.75 12 6.75C13.5188 6.75 14.75 7.98122 14.75 9.5C14.75 11.0188 13.5188 12.25 12 12.25C10.4812 12.25 9.25003 11.0188 9.25003 9.5ZM12.0494 13.25C12.7143 13.25 13.2871 13.2499 13.7459 13.3116C14.2375 13.3777 14.7088 13.5268 15.091 13.909C15.4733 14.2913 15.6223 14.7625 15.6884 15.2542C15.7462 15.6842 15.7498 16.2146 15.75 16.827C15.75 16.8679 15.75 16.9091 15.75 16.9506L15.75 21.25H14.25V17C14.25 16.2717 14.2484 15.8009 14.2018 15.454C14.1581 15.1287 14.0875 15.0268 14.0304 14.9697C13.9733 14.9126 13.8713 14.842 13.546 14.7982C13.1991 14.7516 12.7283 14.75 12 14.75C11.2717 14.75 10.8009 14.7516 10.4541 14.7982C10.1288 14.842 10.0268 14.9126 9.9697 14.9697C9.9126 15.0268 9.84199 15.1287 9.79826 15.454C9.75162 15.8009 9.75003 16.2717 9.75003 17V21.25H8.25003L8.25003 16.9506C8.24999 16.2858 8.24996 15.7129 8.31163 15.2542C8.37773 14.7625 8.52679 14.2913 8.90904 13.909C9.29128 13.5268 9.76255 13.3777 10.2542 13.3116C10.7129 13.2499 11.2858 13.25 11.9507 13.25H12.0494Z"
                   fill="#fff"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M10.75 9.5C10.75 8.80964 11.3097 8.25 12 8.25C12.6904 8.25 13.25 8.80964 13.25 9.5C13.25 10.1904 12.6904 10.75 12 10.75C11.3097 10.75 10.75 10.1904 10.75 9.5Z"
                   fill="#fff"
                 />
@@ -701,9 +531,9 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </span>
         </span>
         <span className="row-span-3 m-8 text-start">
-          <h1 className="text-2xl font-bold text-white rounded-lg">
+          <h2 className="text-2xl font-bold text-white rounded-lg">
             Smart Fan: Cool Comfort, Optimized
-          </h1>
+          </h2>
           <br />
           <p>
             Our Smart Fan automatically adjusts its speed based on the room's
@@ -713,19 +543,23 @@ const Settings = ({ device, isChecked, setIsChecked, isAuto, setAuto }) => {
           </p>
           <br />
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
+            <h2 className="col-span-2 text-xl font-bold text-white rounded-lg">
               Auto Mode
-            </h1>
+            </h2>
             <span className="w-full text-center">
-              <Switch setIsChecked={setAuto} isChecked={isAuto} />
+              <Switch setIsChecked={handleFanAuto} isChecked={isAuto} />
             </span>
           </span>
           <span className="grid grid-flow-row grid-cols-6 w-full">
-            <h1 className="col-span-2 text-xl font-bold text-white rounded-lg">
+            <h2 className="col-span-2 text-xl font-bold text-white rounded-lg">
               State
-            </h1>
+            </h2>
             <span className="w-full text-center">
-              <Switch setIsChecked={setIsChecked} isChecked={isChecked} />
+              <Switch
+                setIsChecked={handleFanManual}
+                isChecked={isChecked}
+                cmds={["fan_off_manual", "fan_on_manual"]}
+              />
             </span>
           </span>
         </span>

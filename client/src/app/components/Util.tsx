@@ -1,8 +1,4 @@
-export const Switch = ({ isChecked, setIsChecked }) => {
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
-
+export const Switch = ({ isChecked, setIsChecked, cmds }) => {
   return (
     <>
       <label className="autoSaverSwitch relative inline-flex cursor-pointer select-none items-center">
@@ -11,7 +7,11 @@ export const Switch = ({ isChecked, setIsChecked }) => {
           name="autoSaver"
           className="sr-only"
           checked={isChecked}
-          onChange={handleCheckboxChange}
+          onChange={
+            cmds
+              ? () => setIsChecked(isChecked ? cmds[0] : cmds[1])
+              : setIsChecked
+          }
         />
         <span
           className={`slider mr-3 flex h-[26px] w-[50px] items-center rounded-full p-1 duration-200 ${

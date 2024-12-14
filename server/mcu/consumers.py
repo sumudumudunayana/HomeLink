@@ -21,7 +21,7 @@ class ESP32Consumer(AsyncWebsocketConsumer):
     async def receive(self, text_data=None, bytes_data=None):
         data = json.loads(text_data)
         cmd = data.get("cmd")
-        logger.info(f"command received from esp32: {cmd}")
+        print(f"command received from esp32: {cmd}")
         channel_layer = get_channel_layer()
         if cmd in COMMANDS:
             component_status.set_door_status(True)
@@ -34,6 +34,6 @@ class ESP32Consumer(AsyncWebsocketConsumer):
             )
 
     async def send_commands_to_esp_32(self, event):
-        logger.info("sending event to esp 32")
+        print("sending event to esp 32")
         cmd = event.get("status")
         await self.send(text_data=json.dumps({"status": cmd}))

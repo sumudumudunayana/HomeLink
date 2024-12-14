@@ -8,7 +8,7 @@
 
 const char* ssid = "XXXXX";
 const char* password = "XXXXX";
-const char* websockets_server = "ws://XXXX.XXX.XX.X:8000/ws/control/mcu";  //server adress and port
+const char* websockets_server = "ws://XXXX.XXX.XX.XX:8000/ws/control/mcu";  //server adress and port
 
 const char* cmds[] = { "door_closed", "door_open", "light_on", "light_off", "fan_on", "fan_off" };  // Array of valid commands
 const int numCmd = sizeof(cmds) / sizeof(cmds[0]);                                                  // Calculate number of commands

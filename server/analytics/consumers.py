@@ -22,7 +22,7 @@ class NextClientConsumer(AsyncWebsocketConsumer):
         cmd = data.get("cmd")
 
         channel_layer = get_channel_layer()
-        logger.info(f"command received from client: {cmd}")
+        print(f"command received from client: {cmd}")
         if cmd in [
             "door_open_manual",
             "door_closed_manual",
@@ -46,6 +46,6 @@ class NextClientConsumer(AsyncWebsocketConsumer):
             )
 
     async def send_message_to_frontend(self, event):
-        logger.info("sending event to client")
+        print("sending event to client")
         status = event.get("status")
         await self.send(text_data=json.dumps({"status": status}))

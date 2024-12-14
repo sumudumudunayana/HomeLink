@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 export default function Clock() {
   let time = new Date().toLocaleTimeString();
@@ -8,5 +9,5 @@ export default function Clock() {
     setTime(time);
   };
   setInterval(UpdateTime);
-  return <h1>{ctime.slice(0, -3)}</h1>;
+  return <div>{ctime.slice(0, -3)}</div>;
 }
