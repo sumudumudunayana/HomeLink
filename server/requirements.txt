@@ -4,3 +4,6 @@ django-environ==0.11.2
 channels[daphne]==4.1.0
 django_cors_headers==4.6.0
 channels_redis==4.2.0
+SpeechRecognition==3.11.0
+PyAudio==0.2.14
+pyttsx3==2.98
