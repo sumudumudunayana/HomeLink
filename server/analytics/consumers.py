@@ -22,7 +22,6 @@ class NextClientConsumer(AsyncWebsocketConsumer):
         cmd = data.get("cmd")
 
         channel_layer = get_channel_layer()
-        print(f"command received from client: {cmd}")
         if cmd in [
             "door_open_manual",
             "door_closed_manual",
@@ -36,6 +35,7 @@ class NextClientConsumer(AsyncWebsocketConsumer):
             "fan_off_manual",
             "fan_operate_auto",
         ]:
+            print(f"command received from client: {cmd}")
             component_status.set_door_status(True)
             await channel_layer.group_send(
                 "esp_32_event_group",

@@ -21,9 +21,9 @@ class ESP32Consumer(AsyncWebsocketConsumer):
     async def receive(self, text_data=None, bytes_data=None):
         data = json.loads(text_data)
         cmd = data.get("cmd")
-        print(f"command received from esp32: {cmd}")
         channel_layer = get_channel_layer()
         if cmd in COMMANDS:
+            print(f"command received from esp32: {cmd}")
             component_status.set_door_status(True)
             await channel_layer.group_send(
                 "next_client_event_group",
