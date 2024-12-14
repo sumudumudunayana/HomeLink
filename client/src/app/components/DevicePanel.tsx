@@ -85,6 +85,7 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
                 setIsChecked={stateHandler}
                 isChecked={isChecked}
                 cmds={[stateCommands.off, stateCommands.on]}
+                disabled={isAuto}
               />
             </span>
           </span>
