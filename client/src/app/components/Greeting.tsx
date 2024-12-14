@@ -1,7 +1,7 @@
 import { LogoIcon } from "./Images";
 import Clock from "./Clock";
 
-export default function WeatherReport() {
+export default function Greeting() {
   return (
     <div className="rounded-md">
       <div className="grid grid-cols-6 gap-4 h-full w-full rounded-md">
