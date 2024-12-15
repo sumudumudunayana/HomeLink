@@ -1,3 +1,3 @@
-from mcu.status import ComponentStatus
+from .manager import DeviceManager
 
-component_status = ComponentStatus()
+device_manager = DeviceManager()

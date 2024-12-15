@@ -1,3 +1,4 @@
+#include <ArduinoJson.h>
 #include <Servo.h>
 #include <dht.h>
 
@@ -9,6 +10,8 @@ int pirSensor = 2;
 int pirState = LOW;
 int pirVal = 0;
 int doorServoPin = 9;
+unsigned long openTime = 0;
+const unsigned long openDuration = 30000;
 
 
 // Ligth controller variables
@@ -39,10 +42,12 @@ int dhtData;
 
 dht DHT;
 
-String DOOR_STATUS = "AUTO";
-String LIGHT_STATUS = "AUTO";
-String ALARM_STATUS = "OFF";
-String FAN_STATUS = "AUTO";
+String DOOR_STATUS = "door_operate_auto";
+String LIGHT_STATUS = "light_operate_auto";
+String ALARM_STATUS = "alarm_off";
+String FAN_STATUS = "fan_operate_auto";
+
+
 
 void setup() {
   doorServo.attach(doorServoPin);
@@ -61,89 +66,97 @@ void setup() {
 }
 
 void loop() {
+  const size_t CAPACITY = JSON_OBJECT_SIZE(1024);
+  StaticJsonDocument<CAPACITY> doc;
+
+  JsonObject object = doc.to<JsonObject>();
+  String payload;
+  String currentCmd;
+
+
   String cmdStr = Serial.readString();
   if (cmdStr.length() != 0) {
     cmdStr.trim();
     if (cmdStr
         == "door_open_manual") {
-      DOOR_STATUS = "MANUAL";
+      DOOR_STATUS = cmdStr;
       pirVal = HIGH;
     }
     if (cmdStr
         == "door_closed_manual") {
-      DOOR_STATUS = "MANUAL";
+      DOOR_STATUS = cmdStr;
       pirVal = LOW;
     }
     if (cmdStr
         == "door_operate_auto") {
-      DOOR_STATUS = "AUTO";
+      DOOR_STATUS = cmdStr;
     }
 
     if (cmdStr
         == "light_on_manual") {
-      LIGHT_STATUS = "MANUAL";
+      LIGHT_STATUS = cmdStr;
       ldrVal = 200;
     }
     if (cmdStr
         == "light_off_manual") {
-      LIGHT_STATUS = "MANUAL";
+      LIGHT_STATUS = cmdStr;
       ldrVal = 400;
     }
     if (cmdStr
         == "light_operate_auto") {
-      LIGHT_STATUS = "AUTO";
+      LIGHT_STATUS = cmdStr;
     }
 
     if (cmdStr
         == "alarm_on") {
-      ALARM_STATUS = "ON";
+      ALARM_STATUS = cmdStr;
     }
     if (cmdStr
         == "alarm_off") {
-      ALARM_STATUS = "OFF";
+      ALARM_STATUS = cmdStr;
     }
 
     if (cmdStr
         == "fan_on_manual") {
-      FAN_STATUS = "MANUAL";
+      FAN_STATUS = cmdStr;
       fanSpeed = 255;
     }
     if (cmdStr
         == "fan_off_manual") {
-      FAN_STATUS = "MANUAL";
+      FAN_STATUS = cmdStr;
       fanSpeed = 0;
     }
     if (cmdStr
         == "fan_operate_auto") {
-      FAN_STATUS = "AUTO";
+      FAN_STATUS = cmdStr;
     }
   }
 
-  if (DOOR_STATUS == "AUTO") {
+  if (DOOR_STATUS == "door_operate_auto") {
     pirVal = digitalRead(pirSensor);
   }
-  if (LIGHT_STATUS == "AUTO") {
+  if (LIGHT_STATUS == "light_operate_auto") {
     ldrVal = analogRead(ldrPin);
   }
-  if (FAN_STATUS == "AUTO") {
+  if (FAN_STATUS == "fan_operate_auto") {
     dhtData = DHT.read11(dhtDataPin);
     temVal = DHT.temperature;
     fanSpeed = map(constrain(temVal, lower_limit, upper_limit), lower_limit, upper_limit, 0, 255);
     if (fanSpeed > 0) {
       if (temState == LOW) {
-        Serial.println("fan_on");
+        currentCmd = "fan_on";
         temState = HIGH;
       }
     } else {
       if (temState == HIGH) {
-        Serial.println("fan_off");
+        currentCmd = "fan_off";
         temState = LOW;
       }
     }
   }
   analogWrite(fanPin, fanSpeed);
 
-  if (ALARM_STATUS == "ON") {
+  if (ALARM_STATUS == "alarm_on") {
     digitalWrite(trigPin, LOW);
     delayMicroseconds(2);
 
@@ -162,20 +175,20 @@ void loop() {
     } else {
       digitalWrite(buzzerPin, LOW);
     }
-  } else if (ALARM_STATUS == "OFF") {
+  } else if (ALARM_STATUS == "alarm_off") {
     digitalWrite(buzzerPin, LOW);
   }
 
   if (ldrVal <= 300) {
     digitalWrite(lightPin, HIGH);
     if (lightState == LOW) {
-      Serial.println("light_on");
+       currentCmd = "light_on";
       lightState = HIGH;
     }
   } else {
     digitalWrite(lightPin, LOW);
     if (lightState == HIGH) {
-      Serial.println("light_off");
+       currentCmd = "light_off";
       lightState = LOW;
     }
   }
@@ -183,16 +196,30 @@ void loop() {
   if (pirVal == HIGH) {
     doorServo.write(120);
     if (pirState == LOW) {
-      Serial.println("door_open");
+      currentCmd = "door_open";
       pirState = HIGH;
+      openTime = millis();
     }
-    delay(100);
   } else {
-    doorServo.write(0);
-    if (pirState == HIGH) {
-      Serial.println("door_closed");
-      pirState = LOW;
+    if (millis() - openTime < openDuration) {
+      // Keep the door open for 5 seconds
+      doorServo.write(120);
+    }else{
+      doorServo.write(0);
+      if (pirState == HIGH) {
+        currentCmd = "door_closed";
+        pirState = LOW;
+      }
     }
-    delay(100);
   }
+
+  object["door"] = DOOR_STATUS;
+  object["light"] = LIGHT_STATUS;
+  object["alarm"] = ALARM_STATUS;
+  object["fan"] = FAN_STATUS;
+  object["cmd"] = currentCmd;
+
+  serializeJson(doc, payload);
+  Serial.println(payload);
+  delay(500);
 }

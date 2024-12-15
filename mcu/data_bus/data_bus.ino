@@ -8,10 +8,7 @@
 
 const char* ssid = "XXXXX";
 const char* password = "XXXXX";
-const char* websockets_server = "ws://XXXX.XXX.XX.XX:8000/ws/control/mcu";  //server adress and port
-
-const char* cmds[] = { "door_closed", "door_open", "light_on", "light_off", "fan_on", "fan_off" };  // Array of valid commands
-const int numCmd = sizeof(cmds) / sizeof(cmds[0]);                                                  // Calculate number of commands
+const char* websockets_server = "ws://XXX.XXX.XX.XX:8000/ws/control/mcu";  //server adress and port
 
 
 using namespace websockets;
@@ -23,6 +20,7 @@ void onMessageCallback(WebsocketsMessage message) {
   const char* command = doc["status"];
   Serial.println(command);
   Serial2.println(command);
+  delay(500);
 }
 
 void onEventsCallback(WebsocketsEvent event, String data) {
@@ -78,26 +76,14 @@ void loop() {
   Serial.print("Recieved Command: ");
   Serial.println(cmdStr);
 
-  //check command exists
-  bool cmdFound = false;
-  for (int i = 0; i < numCmd; i++) {
-    if (cmdStr == cmds[i]) {
-      cmdFound = true;
-      break;
-    }
-  }
-  if (cmdFound) {
-    const size_t CAPACITY = JSON_OBJECT_SIZE(1);
-    StaticJsonDocument<CAPACITY> doc;
+  const size_t CAPACITY = JSON_OBJECT_SIZE(1024);
+  StaticJsonDocument<CAPACITY> doc;
 
-    JsonObject object = doc.to<JsonObject>();
-    object["cmd"] = cmdStr;
+  JsonObject object = doc.to<JsonObject>();
+  object["cmd"] = cmdStr;
 
-    String payload;
-    serializeJson(doc, payload);
-    client.send(payload);
-  } else {
-    Serial.print("ERROR: Unknown Command: ");
-    Serial.println(cmdStr);
-  }
+  String payload;
+  serializeJson(doc, payload);
+  client.send(payload);
+  delay(500); 
 }

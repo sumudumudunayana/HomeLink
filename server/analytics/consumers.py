@@ -1,9 +1,10 @@
 import json
-from channels.layers import get_channel_layer
 import logging
 
 from channels.generic.websocket import AsyncWebsocketConsumer
-from home_link import component_status
+from home_link import device_manager
+
+from home_link.enum import DoorCommands, LightCommands, FanCommands, AlarmCommands
 
 logger = logging.getLogger(__name__)
 
@@ -21,29 +22,14 @@ class NextClientConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         cmd = data.get("cmd")
 
-        channel_layer = get_channel_layer()
-        if cmd in [
-            "door_open_manual",
-            "door_closed_manual",
-            "door_operate_auto",
-            "light_on_manual",
-            "light_off_manual",
-            "light_operate_auto",
-            "alarm_on",
-            "alarm_off",
-            "fan_on_manual",
-            "fan_off_manual",
-            "fan_operate_auto",
-        ]:
-            print(f"command received from client: {cmd}")
-            component_status.set_door_status(True)
-            await channel_layer.group_send(
-                "esp_32_event_group",
-                {
-                    "type": "send_commands_to_esp_32",
-                    "status": cmd,
-                },
-            )
+        if DoorCommands.is_in_commands(cmd):
+            device_manager.door = cmd
+        if FanCommands.is_in_commands(cmd):
+            device_manager.fan = cmd
+        if LightCommands.is_in_commands(cmd):
+            device_manager.light = cmd
+        if AlarmCommands.is_in_commands(cmd):
+            device_manager.alarm = cmd
 
     async def send_message_to_frontend(self, event):
         print("sending event to client")
