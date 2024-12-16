@@ -17,10 +17,14 @@ class CommandConsumer:
     async def _consume_command_async(self):
         channel_layer = get_channel_layer()
         while not self._stop_event.is_set():
+            stack_was_not_empty = False
             while True and not self._stop_event.is_set():
                 stack = cache.get("cmd_stack")
                 if not stack:
+                    if stack_was_not_empty:
+                        print("Stack is empty")
                     break
+                stack_was_not_empty = True
                 print(f"Processing current {stack=}")
                 cmd = stack.pop()
                 cache.set("cmd_stack", stack)

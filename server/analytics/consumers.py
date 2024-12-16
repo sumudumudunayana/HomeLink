@@ -32,6 +32,6 @@ class NextClientConsumer(AsyncWebsocketConsumer):
             device_manager.alarm = cmd
 
     async def send_message_to_frontend(self, event):
-        print("sending event to client")
+        print(f"sending event to client {event=}")
         status = event.get("status")
         await self.send(text_data=json.dumps({"status": status}))

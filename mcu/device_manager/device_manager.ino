@@ -47,7 +47,9 @@ String LIGHT_STATUS = "light_operate_auto";
 String ALARM_STATUS = "alarm_off";
 String FAN_STATUS = "fan_operate_auto";
 
-
+String CURRENT_DOOR_STATUS = "door_closed";
+String CURRENT_FAN_STATUS = "fan_off";
+String CURRENT_LIGHT_STATUS = "light_off";
 
 void setup() {
   doorServo.attach(doorServoPin);
@@ -71,8 +73,6 @@ void loop() {
 
   JsonObject object = doc.to<JsonObject>();
   String payload;
-  String currentCmd;
-
 
   String cmdStr = Serial.readString();
   if (cmdStr.length() != 0) {
@@ -144,12 +144,12 @@ void loop() {
     fanSpeed = map(constrain(temVal, lower_limit, upper_limit), lower_limit, upper_limit, 0, 255);
     if (fanSpeed > 0) {
       if (temState == LOW) {
-        currentCmd = "fan_on";
+        CURRENT_FAN_STATUS = "fan_on";
         temState = HIGH;
       }
     } else {
       if (temState == HIGH) {
-        currentCmd = "fan_off";
+        CURRENT_FAN_STATUS = "fan_off";
         temState = LOW;
       }
     }
@@ -182,13 +182,13 @@ void loop() {
   if (ldrVal <= 300) {
     digitalWrite(lightPin, HIGH);
     if (lightState == LOW) {
-       currentCmd = "light_on";
+      CURRENT_LIGHT_STATUS = "light_on";
       lightState = HIGH;
     }
   } else {
     digitalWrite(lightPin, LOW);
     if (lightState == HIGH) {
-       currentCmd = "light_off";
+       CURRENT_LIGHT_STATUS = "light_off";
       lightState = LOW;
     }
   }
@@ -196,7 +196,7 @@ void loop() {
   if (pirVal == HIGH) {
     doorServo.write(120);
     if (pirState == LOW) {
-      currentCmd = "door_open";
+      CURRENT_DOOR_STATUS = "door_open";
       pirState = HIGH;
       openTime = millis();
     }
@@ -207,7 +207,7 @@ void loop() {
     }else{
       doorServo.write(0);
       if (pirState == HIGH) {
-        currentCmd = "door_closed";
+        CURRENT_DOOR_STATUS = "door_closed";
         pirState = LOW;
       }
     }
@@ -217,9 +217,12 @@ void loop() {
   object["light"] = LIGHT_STATUS;
   object["alarm"] = ALARM_STATUS;
   object["fan"] = FAN_STATUS;
-  object["cmd"] = currentCmd;
+  object["current_door"] = CURRENT_DOOR_STATUS;
+  object["current_alarm"] = ALARM_STATUS;
+  object["current_fan"] = CURRENT_FAN_STATUS;
+  object["current_light"] = CURRENT_LIGHT_STATUS;
 
   serializeJson(doc, payload);
   Serial.println(payload);
-  delay(500);
+  delay(200);
 }

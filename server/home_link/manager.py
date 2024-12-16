@@ -44,7 +44,7 @@ class DeviceManager:
 
     @property
     def cmd_stack(self):
-        self._cmd_stack
+        return self._cmd_stack
 
     @cmd_stack.setter
     def cmd_stack(self, value: str):
@@ -53,3 +53,4 @@ class DeviceManager:
             self._cmd_stack = [cmd for cmd in self._cmd_stack if device not in cmd]
             self._cmd_stack.append(value)
         cache.set("cmd_stack", self._cmd_stack)
+        self._cmd_stack = []

@@ -1,4 +1,5 @@
 import json
+import asyncio
 import logging
 
 from channels.generic.websocket import AsyncWebsocketConsumer
@@ -12,11 +13,17 @@ COMMANDS = [
     "light_off",
     "fan_on",
     "fan_off",
+    "alarm_on",
+    "alarm_off",
 ]
 logger = logging.getLogger(__name__)
 
 
 class ESP32Consumer(AsyncWebsocketConsumer):
+    def __init__(self, *args, **kwargs):
+        self.loop_running = False
+        super().__init__(*args, **kwargs)
+
     async def connect(self):
         self.event_group_name = "esp_32_event_group"
         await self.channel_layer.group_add(self.event_group_name, self.channel_name)
@@ -26,22 +33,23 @@ class ESP32Consumer(AsyncWebsocketConsumer):
         pass
 
     async def receive(self, text_data=None, bytes_data=None):
-        data = json.loads(text_data)
-        cmd = data.get("cmd")
-        cmd_data = json.loads(cmd)
-        current_cmd = cmd_data.get("cmd")
-        if current_cmd and current_cmd in COMMANDS:
-            channel_layer = get_channel_layer()
-            print(f"command received from esp32: {cmd}")
-            await channel_layer.group_send(
-                "next_client_event_group",
-                {
-                    "type": "send_message_to_frontend",
-                    "status": current_cmd,
-                },
-            )
-            return
+        current_statuses = []
         try:
+            data = json.loads(text_data)
+            cmd = data.get("cmd")
+            cmd_data = json.loads(cmd)
+            current_statuses.append(cmd_data.get("current_door"))
+            current_statuses.append(cmd_data.get("current_fan"))
+            current_statuses.append(cmd_data.get("current_alarm"))
+            current_statuses.append(cmd_data.get("current_light"))
+
+            # Run the loop every 5 seconds
+            channel_layer = get_channel_layer()
+            if not self.loop_running:
+                self.loop_running = True
+                asyncio.create_task(
+                    self.run_every_2_seconds(channel_layer, current_statuses)
+                )
             door = cmd_data.get("door")
             alarm = cmd_data.get("alarm")
             fan = cmd_data.get("fan")
@@ -58,8 +66,29 @@ class ESP32Consumer(AsyncWebsocketConsumer):
 
             if alarm and device_manager.alarm != alarm:
                 device_manager.cmd_stack = device_manager.alarm
-        except Exception:
-            print("ERROR: failed to get device status")
+
+        except json.JSONDecodeError as e:
+            print(f"ERROR: failed to get device status, exception: {e}")
+
+    async def run_every_2_seconds(self, channel_layer, current_statuses):
+        task = asyncio.create_task(
+            self.process_statuses(current_statuses, channel_layer)
+        )
+        await task
+        await asyncio.sleep(2)
+        self.loop_running = False
+
+    async def process_statuses(self, current_statuses, channel_layer):
+        for status in current_statuses:
+            if status and status in COMMANDS:
+                print(f"command received from esp32: {status}")
+                await channel_layer.group_send(
+                    "next_client_event_group",
+                    {
+                        "type": "send_message_to_frontend",
+                        "status": status,
+                    },
+                )
 
     async def send_commands_to_esp_32(self, event):
         print("sending event to esp 32")

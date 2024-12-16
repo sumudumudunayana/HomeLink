@@ -6,9 +6,9 @@
 #define RXp2 16
 #define TXp2 17
 
-const char* ssid = "XXXXX";
-const char* password = "XXXXX";
-const char* websockets_server = "ws://XXX.XXX.XX.XX:8000/ws/control/mcu";  //server adress and port
+const char* ssid = "SLT-Fiber-AB78";
+const char* password = "047@ab78";
+const char* websockets_server = "ws://192.168.1.4:8000/ws/control/mcu";  //server adress and port
 
 
 using namespace websockets;
@@ -85,5 +85,5 @@ void loop() {
   String payload;
   serializeJson(doc, payload);
   client.send(payload);
-  delay(500); 
+  delay(200);
 }
