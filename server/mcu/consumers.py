@@ -48,7 +48,7 @@ class ESP32Consumer(AsyncWebsocketConsumer):
             if not self.loop_running:
                 self.loop_running = True
                 asyncio.create_task(
-                    self.run_every_2_seconds(channel_layer, current_statuses)
+                    self.run_every_5_seconds(channel_layer, current_statuses)
                 )
             door = cmd_data.get("door")
             alarm = cmd_data.get("alarm")
@@ -70,12 +70,12 @@ class ESP32Consumer(AsyncWebsocketConsumer):
         except json.JSONDecodeError as e:
             print(f"ERROR: failed to get device status, exception: {e}")
 
-    async def run_every_2_seconds(self, channel_layer, current_statuses):
+    async def run_every_5_seconds(self, channel_layer, current_statuses):
         task = asyncio.create_task(
             self.process_statuses(current_statuses, channel_layer)
         )
         await task
-        await asyncio.sleep(2)
+        await asyncio.sleep(5)
         self.loop_running = False
 
     async def process_statuses(self, current_statuses, channel_layer):
