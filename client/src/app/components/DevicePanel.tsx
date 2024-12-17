@@ -9,6 +9,7 @@ interface DevicePanelProps {
   isAuto: boolean;
   setAuto: (value: boolean) => void;
   webSocket: WebSocket;
+  setDevice: (value: string) => void;
 }
 
 export const DevicePanel: React.FC<DevicePanelProps> = ({
@@ -18,6 +19,7 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
   isAuto,
   setAuto,
   webSocket,
+  setDevice,
 }) => {
   // Helper functions
   const sendCommand = (command: string) => {
@@ -55,9 +57,9 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
         <h2 className="m-8 col-span-3 text-5xl font-bold text-lime-200 rounded-lg">
           {title}
         </h2>
-        <span className="align-end m-8">
+        <button onClick={() => setDevice("home")} className="align-end m-8">
           <HomeIcon />
-        </span>
+        </button>
       </span>
       <span className="row-span-3 m-8 text-start">
         <h2 className="text-2xl font-bold text-white rounded-lg">

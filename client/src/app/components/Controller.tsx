@@ -76,6 +76,7 @@ export default function Controller() {
           setIsChecked: setDoorStatus,
           setAuto: setDoorAuto,
           webSocket: webSocket,
+          setDevice: setSelectedDevice,
         };
       case "light":
         return {
@@ -85,6 +86,7 @@ export default function Controller() {
           setIsChecked: setLightStatus,
           setAuto: setLightAuto,
           webSocket: webSocket,
+          setDevice: setSelectedDevice,
         };
       case "alarm":
         return {
@@ -92,6 +94,7 @@ export default function Controller() {
           isChecked: alarmStatus,
           setIsChecked: setAlarmStatus,
           webSocket: webSocket,
+          setDevice: setSelectedDevice,
         };
       case "fan":
         return {
@@ -101,6 +104,7 @@ export default function Controller() {
           setIsChecked: setFanStatus,
           setAuto: setFanAuto,
           webSocket: webSocket,
+          setDevice: setSelectedDevice,
         };
       default:
         break;

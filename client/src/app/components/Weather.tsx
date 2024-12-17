@@ -34,7 +34,11 @@ export const Weather = () => {
   }
 
   if (!weatherData) {
-    return <p className="text-gray-500">Loading weather data...</p>;
+    return (
+      <div className="flex w-full h-full justify-center items-center">
+        <div className="w-16 h-16 border-8 border-t-transparent border-solid rounded-full border-[#d9f99d] animate-spin"></div>
+      </div>
+    );
   }
 
   const { location, current } = weatherData.report;
@@ -47,7 +51,7 @@ export const Weather = () => {
             <WeatherStatus1 />
           </div>
           <div>
-            <p className="text-xl font-bold">
+            <p className="text-xl text-center font-bold">
               {current.condition.text.toUpperCase()}
             </p>
           </div>
