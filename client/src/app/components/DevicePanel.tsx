@@ -1,5 +1,6 @@
 import { HomeIcon } from "./Images";
 import { Switch } from "./Switch";
+import { Weather } from "./Weather";
 
 interface DevicePanelProps {
   device: string;
@@ -184,6 +185,8 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
 
   // Default fallback
   return (
-    <div className="grid grid-cols-8 bg-black bg-opacity-30 shadow-lg h-full rounded-md backdrop-blur-lg bg-black/15"></div>
+    <div className="bg-slate-200 bg-opacity-10 shadow-lg h-full rounded-md backdrop-blur-lg bg-white/12">
+      <Weather />
+    </div>
   );
 };
