@@ -3,6 +3,7 @@ interface SwitchProps {
   setIsChecked: (value: boolean | string) => void;
   cmds?: string[]; // Optional command strings
   disabled?: boolean; // New optional prop for disabling the switch
+  adminSet: (value: boolean) => void;
 }
 
 export const Switch: React.FC<SwitchProps> = ({
@@ -10,6 +11,7 @@ export const Switch: React.FC<SwitchProps> = ({
   setIsChecked,
   cmds,
   disabled = false, // Default value for disabled
+  adminSet,
 }) => {
   const handleChange = () => {
     if (!disabled) {
@@ -19,6 +21,7 @@ export const Switch: React.FC<SwitchProps> = ({
         setIsChecked(isChecked ? cmds[0] : cmds[1]);
       } else {
         // toggle Auto
+        isChecked ? adminSet(true) : adminSet(false);
         setIsChecked(!isChecked);
       }
     }

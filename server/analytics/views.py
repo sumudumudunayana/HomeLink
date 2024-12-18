@@ -8,8 +8,6 @@ from rest_framework import status
 
 KEY = settings.WEATHER_API_KEY
 
-print("KEY", KEY)
-
 
 class WeatherViewSet(RetrieveAPIView):
     """

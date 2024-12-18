@@ -154,7 +154,52 @@ void loop() {
       }
     }
   }
-  analogWrite(fanPin, fanSpeed);
+
+  if (DOOR_STATUS == "door_open_manual" ){
+    CURRENT_DOOR_STATUS = "door_open";
+    doorServo.write(120);
+  }
+  if (DOOR_STATUS == "door_closed_manual" ){
+    CURRENT_DOOR_STATUS = "door_closed";
+    doorServo.write(0);
+  }
+
+  if (DOOR_STATUS == "door_operate_auto"){
+    if (pirVal == HIGH) {
+      doorServo.write(120);
+      CURRENT_DOOR_STATUS = "door_open";
+      if (pirState == LOW) {
+        pirState = HIGH;
+        openTime = millis();
+      }
+    } else{
+      if (millis() - openTime < openDuration) {
+        // Keep the door open for 5 seconds
+        doorServo.write(120);
+        CURRENT_DOOR_STATUS = "door_open";
+      }else{
+        doorServo.write(0);
+        CURRENT_DOOR_STATUS = "door_closed";
+        if (pirState == HIGH) {
+          pirState = LOW;
+        }
+      }
+    }
+  }
+  
+  if (FAN_STATUS == "fan_on_manual" ){
+    CURRENT_FAN_STATUS = "fan_on";
+    analogWrite(fanPin, 255);
+  }
+  if (FAN_STATUS == "fan_off_manual" ){
+    CURRENT_FAN_STATUS = "fan_off";
+    analogWrite(fanPin, 0);
+  }
+
+  if (FAN_STATUS == "fan_operate_auto"){
+    CURRENT_FAN_STATUS = fanSpeed > 0 ? "fan_on" : "fan_off";
+    analogWrite(fanPin, fanSpeed);
+  }
 
   if (ALARM_STATUS == "alarm_on") {
     digitalWrite(trigPin, LOW);
@@ -179,36 +224,27 @@ void loop() {
     digitalWrite(buzzerPin, LOW);
   }
 
-  if (ldrVal <= 300) {
+  if (LIGHT_STATUS == "light_on_manual" ){
+    CURRENT_LIGHT_STATUS = "light_on";
     digitalWrite(lightPin, HIGH);
-    if (lightState == LOW) {
-      CURRENT_LIGHT_STATUS = "light_on";
-      lightState = HIGH;
-    }
-  } else {
+  }
+  if (LIGHT_STATUS == "light_off_manual" ){
+    CURRENT_LIGHT_STATUS = "light_off";
     digitalWrite(lightPin, LOW);
-    if (lightState == HIGH) {
-       CURRENT_LIGHT_STATUS = "light_off";
-      lightState = LOW;
-    }
   }
 
-  if (pirVal == HIGH) {
-    doorServo.write(120);
-    if (pirState == LOW) {
-      CURRENT_DOOR_STATUS = "door_open";
-      pirState = HIGH;
-      openTime = millis();
-    }
-  } else {
-    if (millis() - openTime < openDuration) {
-      // Keep the door open for 5 seconds
-      doorServo.write(120);
-    }else{
-      doorServo.write(0);
-      if (pirState == HIGH) {
-        CURRENT_DOOR_STATUS = "door_closed";
-        pirState = LOW;
+  if (LIGHT_STATUS == "light_operate_auto" ){
+    if (ldrVal <= 300) {
+      digitalWrite(lightPin, HIGH);
+      CURRENT_LIGHT_STATUS = "light_on";
+      if (lightState == LOW) {
+        lightState = HIGH;
+      }
+    } else {
+      digitalWrite(lightPin, LOW);
+      CURRENT_LIGHT_STATUS = "light_off";
+      if (lightState == HIGH) {
+        lightState = LOW;
       }
     }
   }

@@ -10,6 +10,7 @@ interface DevicePanelProps {
   setAuto: (value: boolean) => void;
   webSocket: WebSocket;
   setDevice: (value: string) => void;
+  adminSet: (value: boolean) => void;
 }
 
 export const DevicePanel: React.FC<DevicePanelProps> = ({
@@ -20,6 +21,7 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
   setAuto,
   webSocket,
   setDevice,
+  adminSet,
 }) => {
   // Helper functions
   const sendCommand = (command: string) => {
@@ -74,7 +76,11 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
               Auto Mode
             </h2>
             <span className="w-full text-center">
-              <Switch setIsChecked={autoHandler} isChecked={isAuto} />
+              <Switch
+                setIsChecked={autoHandler}
+                isChecked={isAuto}
+                adminSet={adminSet}
+              />
             </span>
           </span>
         )}
@@ -89,6 +95,7 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
                 isChecked={isChecked}
                 cmds={[stateCommands.off, stateCommands.on]}
                 disabled={isAuto}
+                adminSet={adminSet}
               />
             </span>
           </span>

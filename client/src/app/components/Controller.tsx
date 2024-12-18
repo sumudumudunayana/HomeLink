@@ -21,11 +21,19 @@ setInterval(() => {
 export default function Controller() {
   const [doorStatus, setDoorStatus] = useState<boolean>(false);
   const [doorAuto, setDoorAuto] = useState<boolean>(true);
+  const [doorAdminSet, setDoorAdminSet] = useState<boolean>(false);
+
   const [lightStatus, setLightStatus] = useState<boolean>(false);
   const [lightAuto, setLightAuto] = useState<boolean>(true);
+  const [lightAdminSet, setLightAdminSet] = useState<boolean>(false);
+
   const [alarmStatus, setAlarmStatus] = useState<boolean>(false);
+  const [alarmAdminSet, setAlarmAdminSet] = useState<boolean>(false);
+
   const [fanStatus, setFanStatus] = useState<boolean>(false);
   const [fanAuto, setFanAuto] = useState<boolean>(true);
+  const [fanAdminSet, setFanAdminSet] = useState<boolean>(false);
+
   const [selectedDevice, setSelectedDevice] = useState<string>("home");
 
   useEffect(() => {
@@ -33,38 +41,53 @@ export default function Controller() {
       if (event.data === "connection established") return;
 
       const { status } = JSON.parse(event.data);
-      console.log("STATUS: ", status);
-
+      console.log(doorAdminSet);
       switch (status) {
         case "door_open":
-          setDoorStatus(true);
+          if (!doorAdminSet) {
+            setDoorStatus(true);
+          }
           break;
         case "door_closed":
-          setDoorStatus(false);
+          if (!doorAdminSet) {
+            setDoorStatus(false);
+          }
           break;
         case "light_on":
-          setLightStatus(true);
+          if (!lightAdminSet) {
+            setLightStatus(true);
+          }
           break;
         case "light_off":
-          setLightStatus(false);
+          if (!lightAdminSet) {
+            setLightStatus(false);
+          }
           break;
         case "alarm_on":
-          setAlarmStatus(true);
+          if (!alarmAdminSet) {
+            setAlarmStatus(true);
+          }
           break;
         case "alarm_off":
-          setAlarmStatus(false);
+          if (!alarmAdminSet) {
+            setAlarmStatus(false);
+          }
           break;
         case "fan_on":
-          setFanStatus(true);
+          if (!fanAdminSet) {
+            setFanStatus(true);
+          }
           break;
         case "fan_off":
-          setFanStatus(false);
+          if (!fanAdminSet) {
+            setFanStatus(false);
+          }
           break;
         default:
           break;
       }
     };
-  }, []);
+  }, [doorAdminSet, fanAdminSet, alarmAdminSet, lightAdminSet]);
 
   const getSettingsProps = () => {
     switch (selectedDevice) {
@@ -77,6 +100,7 @@ export default function Controller() {
           setAuto: setDoorAuto,
           webSocket: webSocket,
           setDevice: setSelectedDevice,
+          adminSet: setDoorAdminSet,
         };
       case "light":
         return {
@@ -87,6 +111,7 @@ export default function Controller() {
           setAuto: setLightAuto,
           webSocket: webSocket,
           setDevice: setSelectedDevice,
+          adminSet: setLightAdminSet,
         };
       case "alarm":
         return {
@@ -95,6 +120,7 @@ export default function Controller() {
           setIsChecked: setAlarmStatus,
           webSocket: webSocket,
           setDevice: setSelectedDevice,
+          adminSet: setAlarmAdminSet,
         };
       case "fan":
         return {
@@ -105,6 +131,7 @@ export default function Controller() {
           setAuto: setFanAuto,
           webSocket: webSocket,
           setDevice: setSelectedDevice,
+          adminSet: setFanAdminSet,
         };
       default:
         break;
