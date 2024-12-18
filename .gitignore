@@ -3,6 +3,7 @@ node_modules
 
 # SERVER 
 .env
+env*
 db.sqlite3
 venv
 .DS_Store
