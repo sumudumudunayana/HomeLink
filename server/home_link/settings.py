@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Read envs
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
-env = environ.Env(SECRET_KEY=(str, ""))
+env = environ.Env(SECRET_KEY=(str, ""), WEATHER_API_KEY=(str, ""))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -152,3 +152,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Weather API envs
+WEATHER_API_KEY = env("WEATHER_API_KEY")
