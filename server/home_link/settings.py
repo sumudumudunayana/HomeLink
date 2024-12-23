@@ -42,6 +42,7 @@ CORS_ALLOWED_ORIGINS = [
 
 INSTALLED_APPS = [
     "daphne",
+    "biometrics",
     "analytics",
     "mcu",
     "corsheaders",
