@@ -11,7 +11,7 @@ int pirState = LOW;
 int pirVal = 0;
 int doorServoPin = 9;
 unsigned long openTime = 0;
-const unsigned long openDuration = 30000;
+const unsigned long openDuration = 10000;
 
 // Light controller variables
 const int lightPin = 4;

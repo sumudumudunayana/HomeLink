@@ -46,7 +46,7 @@ void loop() {
   Serial.println(cmdStr);
 
   // Send command to WebSocket server as JSON
-  const size_t CAPACITY = JSON_OBJECT_SIZE(1024);
+  const size_t CAPACITY = JSON_OBJECT_SIZE(64);
   StaticJsonDocument<CAPACITY> doc;
   JsonObject object = doc.to<JsonObject>();
   object["cmd"] = cmdStr;
