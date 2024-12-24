@@ -20,8 +20,6 @@ int lightState = LOW;
 int ldrVal = LOW;
 
 // Alarm controller variables
-const int echoPin = 6;
-const int trigPin = 8;
 long duration = 0;
 int distance = 0;
 const int buzzerPin = 10;
@@ -35,7 +33,6 @@ int temVal = 0;
 int fanSpeed = 0;
 int dhtData = 0;
 int dhtDataPin = 13;
-
 
 // Device statuses
 String DOOR_STATUS = "door_operate_auto";

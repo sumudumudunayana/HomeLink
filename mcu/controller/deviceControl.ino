@@ -38,7 +38,7 @@ void handleFanAutoControl() {
   dhtData = DHT.read11(dhtDataPin);
   temVal = DHT.temperature;
   fanSpeed = map(constrain(temVal, lower_limit, upper_limit), lower_limit, upper_limit, 0, 255);
-  
+
   if (fanSpeed > 0 && temState == LOW) {
     CURRENT_FAN_STATUS = "fan_on";
     temState = HIGH;
@@ -74,16 +74,7 @@ void handleLightAutoControl() {
 
 void handleAlarmControl() {
   if (ALARM_STATUS == "alarm_on") {
-    digitalWrite(trigPin, LOW);
-    delayMicroseconds(2);
-    digitalWrite(trigPin, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(trigPin, LOW);
-  
-    duration = pulseIn(echoPin, HIGH);
-    distance = duration * 0.0344 / 2;
-  
-    digitalWrite(buzzerPin, distance < 20 ? HIGH : LOW);
+    digitalWrite(buzzerPin, HIGH);
   } else {
     digitalWrite(buzzerPin, LOW);
   }

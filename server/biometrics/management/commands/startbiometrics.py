@@ -124,7 +124,7 @@ class Command(BaseCommand):
         )
         plain_message = strip_tags(convert_to_html_content)
         send_mail(
-            subject="Receiver information from a form",
+            subject="⚠️ Gaia Security Alert: Review Incident Details Now",
             message=plain_message,
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[

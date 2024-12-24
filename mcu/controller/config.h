@@ -24,8 +24,6 @@ extern int lightState;
 extern int ldrVal;
 
 // Alarm controller variables
-extern const int echoPin;
-extern const int trigPin;
 extern long duration;
 extern int distance;
 extern const int buzzerPin;
