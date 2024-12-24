@@ -4,7 +4,13 @@ import logging
 from channels.generic.websocket import AsyncWebsocketConsumer
 from home_link import device_manager
 
-from home_link.enum import DoorCommands, LightCommands, FanCommands, AlarmCommands
+from home_link.enum import (
+    DoorCommands,
+    LightCommands,
+    FanCommands,
+    AlarmCommands,
+    ShieldCommands,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +27,8 @@ class NextClientConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data=None, bytes_data=None):
         data = json.loads(text_data)
         cmd = data.get("cmd")
-
+        if ShieldCommands.is_in_commands(cmd):
+            device_manager.shield = cmd
         if DoorCommands.is_in_commands(cmd):
             device_manager.door = cmd
         if FanCommands.is_in_commands(cmd):

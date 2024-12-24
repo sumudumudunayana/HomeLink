@@ -1,4 +1,10 @@
-from home_link.enum import DoorCommands, AlarmCommands, FanCommands, LightCommands
+from home_link.enum import (
+    DoorCommands,
+    AlarmCommands,
+    FanCommands,
+    LightCommands,
+    ShieldCommands,
+)
 from django.core.cache import cache
 
 
@@ -8,7 +14,16 @@ class DeviceManager:
         self._light = LightCommands.AUTO.value
         self._alarm = AlarmCommands.MANUAL_OFF.value
         self._fan = FanCommands.AUTO.value
+        self._shield = ShieldCommands.MANUAL_OFF.value
         self._cmd_stack = []
+
+    @property
+    def shield(self):
+        return self.shield
+
+    @shield.setter
+    def shield(self, value: ShieldCommands):
+        self.shield = value
 
     @property
     def alarm(self):

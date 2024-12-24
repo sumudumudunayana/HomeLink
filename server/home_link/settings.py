@@ -22,7 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Read envs
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
-env = environ.Env(SECRET_KEY=(str, ""), WEATHER_API_KEY=(str, ""))
+env = environ.Env(
+    SECRET_KEY=(str, ""),
+    WEATHER_API_KEY=(str, ""),
+    EMAIL_HOST_USER=(str, ""),
+    EMAIL_HOST_PASSWORD=(str, ""),
+    EMAIL_USE_TLS=(bool, True),
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -37,6 +43,15 @@ ALLOWED_HOSTS = ["*"]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+# Email Credentials
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = env("EMAIL_USE_TLS")
 
 # Application definition
 

@@ -31,3 +31,8 @@ class FanCommands(BaseCommand):
 class AlarmCommands(BaseCommand):
     MANUAL_ON = "alarm_on"
     MANUAL_OFF = "alarm_off"
+
+
+class ShieldCommands(BaseCommand):
+    MANUAL_ON = "shield_on"
+    MANUAL_OFF = "shield_off"

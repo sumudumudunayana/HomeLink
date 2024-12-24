@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intruder Alert</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 20px auto;
+        background: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        text-align: center;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eeeeee;
+      }
+      .header img {
+        max-width: 150px;
+        margin-bottom: 10px;
+      }
+      .header h1 {
+        color: #d9534f;
+        font-size: 24px;
+      }
+      .content {
+        padding: 20px 0;
+      }
+      .content p {
+        margin: 10px 0;
+      }
+      .footer {
+        text-align: center;
+        font-size: 12px;
+        color: #777777;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="header">
+        <img
+          src="https://i.ibb.co/xX5r8V3/e8d51866-cab8-4ea9-9ab7-b72dea449a4f.jpg"
+          width="150"
+          height="150"
+          alt="Gaia Logo"
+        />
+        <h1>🚨 Intruder Alert from Gaia!</h1>
+      </div>
+      <div class="content">
+        <p>Hello <strong>{{ receiver_name }}</strong>,</p>
+        <p>
+          Gaia has detected <strong>unusual activity</strong> at your property.
+          Below are the details of the alert:
+        </p>
+        <ul>
+          <li><strong>Location:</strong> Front Door</li>
+          <li><strong>Date & Time:</strong> {{ detection_time }}</li>
+        </ul>
+        <p>
+          Please review the situation and take appropriate action. If you need
+          assistance, our team is here to help.
+        </p>
+      </div>
+      <div class="footer">
+        <p>For support, contact us at:</p>
+        <p>📞 119</p>
+        <p>Stay safe,<br />The Gaia Security Team</p>
+      </div>
+    </div>
+  </body>
+</html>
