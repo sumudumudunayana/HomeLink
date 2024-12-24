@@ -10,62 +10,62 @@ from django.core.cache import cache
 
 class DeviceManager:
     def __init__(self):
-        self._door = DoorCommands.AUTO.value
-        self._light = LightCommands.AUTO.value
-        self._alarm = AlarmCommands.MANUAL_OFF.value
-        self._fan = FanCommands.AUTO.value
-        self._shield = ShieldCommands.MANUAL_OFF.value
-        self._cmd_stack = []
+        cache.set("door", DoorCommands.AUTO.value)
+        cache.set("light", LightCommands.AUTO.value)
+        cache.set("alarm", AlarmCommands.MANUAL_OFF.value)
+        cache.set("fan", FanCommands.AUTO.value)
+        cache.set("shield", ShieldCommands.MANUAL_OFF.value)
+        cache.set("cmd_stack", [])
 
     @property
     def shield(self):
-        return self.shield
+        return cache.get("shield")
 
     @shield.setter
     def shield(self, value: ShieldCommands):
-        self.shield = value
+        cache.set("shield", value)
 
     @property
     def alarm(self):
-        return self._alarm
+        return cache.get("alarm")
 
     @alarm.setter
     def alarm(self, value: AlarmCommands):
-        self._alarm = value
+        cache.set("alarm", value)
 
     @property
     def door(self):
-        return self._door
+        return cache.get("door")
 
     @door.setter
     def door(self, value: DoorCommands):
-        self._door = value
+        cache.set("door", value)
 
     @property
     def fan(self):
-        return self._fan
+        return cache.get("fan")
 
     @fan.setter
     def fan(self, value: FanCommands):
-        self._fan = value
+        cache.set("fan", value)
 
     @property
     def light(self):
-        return self._light
+        return cache.get("light")
 
     @light.setter
     def light(self, value: LightCommands):
-        self._light = value
+        cache.set("light", value)
 
     @property
     def cmd_stack(self):
-        return self._cmd_stack
+        return cache.get("cmd_stack")
 
     @cmd_stack.setter
     def cmd_stack(self, value: str):
-        if value and value not in self._cmd_stack:
+        cmd_stack = self.cmd_stack
+        if value and value not in cmd_stack:
             device = value.split("_")[0]
-            self._cmd_stack = [cmd for cmd in self._cmd_stack if device not in cmd]
-            self._cmd_stack.append(value)
-        cache.set("cmd_stack", self._cmd_stack)
-        self._cmd_stack = []
+            cmd_stack = [cmd for cmd in cmd_stack if device not in cmd]
+            cmd_stack.append(value)
+            cache.set("cmd_stack", cmd_stack)

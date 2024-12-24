@@ -27,6 +27,8 @@ export default function Controller() {
   const [lightAuto, setLightAuto] = useState<boolean>(true);
   const [lightAdminSet, setLightAdminSet] = useState<boolean>(false);
 
+  const [shieldStatus, setShieldStatus] = useState<boolean>(false);
+
   const [alarmStatus, setAlarmStatus] = useState<boolean>(false);
   const [alarmAdminSet, setAlarmAdminSet] = useState<boolean>(false);
 
@@ -121,6 +123,8 @@ export default function Controller() {
           webSocket: webSocket,
           setDevice: setSelectedDevice,
           adminSet: setAlarmAdminSet,
+          shieldStatus: shieldStatus,
+          setShieldStatus: setShieldStatus,
         };
       case "fan":
         return {

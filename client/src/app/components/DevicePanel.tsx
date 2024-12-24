@@ -13,7 +13,20 @@ interface DevicePanelProps {
   adminSet: (value: boolean) => void;
 }
 
-export const DevicePanel: React.FC<DevicePanelProps> = ({
+interface AlarmPanelProps {
+  device: string;
+  isChecked: boolean;
+  setIsChecked: (value: boolean) => void;
+  isAuto: boolean;
+  setAuto: (value: boolean) => void;
+  webSocket: WebSocket;
+  setDevice: (value: string) => void;
+  adminSet: (value: boolean) => void;
+  shieldStatus: boolean;
+  setShieldStatus: (value: boolean) => void;
+}
+
+export const DevicePanel: React.FC<DevicePanelProps | AlarmPanelProps> = ({
   device,
   isChecked,
   setIsChecked,
@@ -22,6 +35,8 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
   webSocket,
   setDevice,
   adminSet,
+  shieldStatus,
+  setShieldStatus,
 }) => {
   // Helper functions
   const sendCommand = (command: string) => {
@@ -47,12 +62,19 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
     setIsChecked(command.includes("on") || command.includes("open"));
   };
 
+  const toggleShieldState = (command: string) => {
+    sendCommand(command);
+    setShieldStatus(command.includes("on"));
+  };
+
   const getDeviceContent = (
     title: string,
     description: { heading: string; body: string },
     autoHandler: (() => void) | null,
     stateHandler: ((cmd: string) => void) | null,
-    stateCommands: { on: string; off: string } | null
+    stateCommands: { on: string; off: string } | null,
+    shieldHandler: ((cmd: string) => void) | null,
+    shieldStateCommands: { on: string; off: string } | null
   ) => (
     <>
       <span className="grid grid-flow-row grid-cols-4 w-full">
@@ -70,6 +92,20 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
         <br />
         <p>{description.body}</p>
         <br />
+        {shieldHandler && shieldStateCommands && (
+          <span className="grid grid-flow-row grid-cols-6 w-full">
+            <h2 className="col-span-2 text-xl font-bold text-white rounded-lg">
+              Shields
+            </h2>
+            <span className="w-full text-center">
+              <Switch
+                setIsChecked={shieldHandler}
+                isChecked={shieldStatus}
+                cmds={[shieldStateCommands.off, shieldStateCommands.on]}
+              />
+            </span>
+          </span>
+        )}
         {autoHandler && (
           <span className="grid grid-flow-row grid-cols-6 w-full">
             <h2 className="col-span-2 text-xl font-bold text-white rounded-lg">
@@ -87,14 +123,14 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
         {stateHandler && stateCommands && (
           <span className="grid grid-flow-row grid-cols-6 w-full">
             <h2 className="col-span-2 text-xl font-bold text-white rounded-lg">
-              State
+              {shieldHandler ? "Alarm" : "State"}
             </h2>
             <span className="w-full text-center">
               <Switch
                 setIsChecked={stateHandler}
                 isChecked={isChecked}
                 cmds={[stateCommands.off, stateCommands.on]}
-                disabled={isAuto}
+                disabled={shieldHandler ? !shieldStatus : isAuto}
                 adminSet={adminSet}
               />
             </span>
@@ -111,6 +147,8 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
       title: string;
       description: { heading: string; body: string };
       autoHandler: (() => void) | null;
+      shieldHandler: ((cmd: string) => void) | null;
+      shieldStateCommands: { on: string; off: string } | null;
       stateHandler: ((cmd: string) => void) | null;
       stateCommands: { on: string; off: string } | null;
     }
@@ -123,6 +161,8 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
         Equipped with advanced motion sensors, it automatically opens its lid when it detects a hand approaching. 
         No need to touch the bin, reducing the spread of germs. It's perfect for homes, offices, and public spaces.`,
       },
+      shieldHandler: null,
+      shieldStateCommands: null,
       autoHandler: () =>
         toggleAutoMode("door_operate_auto", {
           on: "door_open_manual",
@@ -139,6 +179,8 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
         It automatically turns on when it’s dark and dims or turns off when there’s enough natural light. 
         Enjoy energy-efficient and convenient lighting that adapts to your environment.`,
       },
+      shieldHandler: null,
+      shieldStateCommands: null,
       autoHandler: () =>
         toggleAutoMode("light_operate_auto", {
           on: "light_on_manual",
@@ -155,6 +197,8 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
         Easily arm and disarm the system, set personalized schedules, and monitor your property remotely. 
         Our system offers advanced features like motion sensors, door/window sensors, and loud alarms to keep your home safe and secure.`,
       },
+      shieldHandler: (cmd) => toggleShieldState(cmd),
+      shieldStateCommands: { on: "shield_on", off: "shield_off" },
       autoHandler: null,
       stateHandler: (cmd) => toggleState(cmd),
       stateCommands: { on: "alarm_on", off: "alarm_off" },
@@ -167,6 +211,8 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
         It provides optimal cooling without overworking, ensuring energy efficiency and comfort. 
         Experience the future of cooling, where your fan adapts to your environment.`,
       },
+      shieldHandler: null,
+      shieldStateCommands: null,
       autoHandler: () =>
         toggleAutoMode("fan_operate_auto", {
           on: "fan_on_manual",
@@ -186,7 +232,9 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({
           currentDevice.description,
           currentDevice.autoHandler,
           currentDevice.stateHandler,
-          currentDevice.stateCommands
+          currentDevice.stateCommands,
+          currentDevice.shieldHandler,
+          currentDevice.shieldStateCommands
         )}
       </div>
     );
