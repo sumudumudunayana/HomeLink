@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "biometrics",
     "analytics",
     "mcu",
+    "assistant",
     "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",

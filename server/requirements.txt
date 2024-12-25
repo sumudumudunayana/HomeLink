@@ -5,3 +5,4 @@ channels[daphne]==4.1.0
 django_cors_headers==4.6.0
 channels_redis==4.2.0
 requests==2.32.3
+sentence-transformers==3.3.1

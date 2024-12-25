@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class TextgenConfig(AppConfig):
+class AssistantConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "textgen"
+    name = "assistant"
