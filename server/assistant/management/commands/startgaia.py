@@ -1,6 +1,7 @@
 import json
 import speech_recognition as sr
 from django.core.management.base import BaseCommand
+
 import time
 from sentence_transformers import SentenceTransformer, util
 import torch
@@ -8,6 +9,66 @@ from gtts import gTTS
 from io import BytesIO
 import pygame
 import os
+
+from home_link import device_manager
+
+COMMAND_DATA = [
+    {
+        "id": 1,
+        "context": "Open the door. Unlock the door. Let me in. Open the gate. Entry access.",
+        "response_text": "Opening the door.",
+        "cmd": "door_open_manual",
+    },
+    {
+        "id": 2,
+        "context": "Close the door. Lock the door. Shut the door. Secure the entrance. Close the gate.",
+        "response_text": "Closing the door.",
+        "cmd": "door_closed_manual",
+    },
+    {
+        "id": 3,
+        "context": "Turn the fan on. Start the fan. I'm hot. It's hot. Turn the air on. Need some air.",
+        "response_text": "Turning the fan on.",
+        "cmd": "fan_on_manual",
+    },
+    {
+        "id": 4,
+        "context": "Turn the fan off. Stop the fan. I'm cold. It's cold. Turn the air off. No more air.",
+        "response_text": "Turning the fan off.",
+        "cmd": "fan_off_manual",
+    },
+    {
+        "id": 5,
+        "context": "Activate the shield. Engage the shield. Turn on the shield. Protect us. Shield up.",
+        "response_text": "Activating shield.",
+        "cmd": "shield_on",
+    },
+    {
+        "id": 6,
+        "context": "Deactivate the shield. Disengage the shield. Turn off the shield. Lower the shield. Shield down.",
+        "response_text": "Deactivating shield.",
+        "cmd": "shield_off",
+    },
+    {
+        "id": 7,
+        "context": "Turn the light on. Turn on the light. It's dark. I can't see. Need light. Lights on. illuminate. It's dark in here do something.",
+        "response_text": "Turning the light on.",
+        "cmd": "light_on_manual",
+    },
+    {
+        "id": 8,
+        "context": "Turn the light off. Turn off the light. It's too bright. Lights off. I don't need light. It's bright.",
+        "response_text": "Turning the light off.",
+        "cmd": "light_off_manual",
+    },
+    {
+        "id": 9,
+        "context": "Introduce yourself. Tell me about Gaia. What is Gaia? What can you do? Give me an introduction. What are you?",
+        "response_text": "I am Gaia, a cutting-edge home automation system designed to simplify your life. I can control your home with voice commands, personalize your environment, help you save energy, enhance your security, and provide a seamless user experience.",
+        "cmd": "gaia_introduction",
+    },
+]
+BACKEND_COMMANDS = [i["cmd"] for i in COMMAND_DATA if i["id"] < 9]
 
 
 class Command(BaseCommand):
@@ -34,27 +95,17 @@ class Command(BaseCommand):
 
     def encode_and_save_dataset(self, output_file="encoded_data.json"):
         # Sample data: dictionary of objects with 'context' field
-        data = [
-            {"id": 1, "context": "The quick brown fox jumps over the lazy dog."},
-            {
-                "id": 2,
-                "context": "A journey of a thousand miles begins with a single step.",
-            },
-            {"id": 3, "context": "To be or not to be, that is the question."},
-            {"id": 4, "context": "All that glitters is not gold."},
-            {"id": 5, "context": "Where there's a will, there's a way."},
-        ]
 
         # Encode all the contexts
         context_embeddings = self.model.encode(
-            [item["context"] for item in data], convert_to_tensor=True
+            [item["context"] for item in COMMAND_DATA], convert_to_tensor=True
         )
 
         # Convert embeddings to list for JSON serialization
         serializable_embeddings = context_embeddings.tolist()
 
         # Prepare data for saving
-        save_data = {"data": data, "embeddings": serializable_embeddings}
+        save_data = {"data": COMMAND_DATA, "embeddings": serializable_embeddings}
 
         # Save to JSON file
         with open(output_file, "w") as f:
@@ -90,10 +141,10 @@ class Command(BaseCommand):
         while pygame.mixer.get_busy():
             time.sleep(0.1)
 
-    def speak(self, text, language="en"):
+    def speak(self, text, language="en", tld="co.uk"):
         """Speaks without saving the audio file"""
         mp3_fo = BytesIO()
-        tts = gTTS(text, lang=language)
+        tts = gTTS(text, lang=language, tld=tld)
         tts.write_to_fp(mp3_fo)
         mp3_fo.seek(0)
         sound = pygame.mixer.Sound(mp3_fo)
@@ -111,7 +162,7 @@ class Command(BaseCommand):
                     ).lower()
                     if self.is_similar_to_wake_word(text):
                         self.stdout.write("Wake word detected!")
-                        self.speak(f"How can I help you {self.user_name}?")
+                        self.speak("How can I help you?")
                         return True
                 except sr.UnknownValueError:
                     pass  # Ignore unrecognized audio
@@ -130,21 +181,32 @@ class Command(BaseCommand):
                 return True
         return False
 
+    @staticmethod
+    def set_command(command):
+        if command in BACKEND_COMMANDS:
+            if "door" in command:
+                device_manager.door = command
+            elif "fan" in command:
+                device_manager.fan = command
+            elif "shield" in command:
+                device_manager.shield = command
+            elif "light" in command:
+                device_manager.light = command
+
     def handle(self, *args, **options):
         r = sr.Recognizer()
 
         with sr.Microphone() as source:
             r.adjust_for_ambient_noise(source)  # Adjust for ambient noise once
 
+            self.speak("Hello, Good afternoon, I am Gaia, your personal assistant.")
             self.stdout.write(f"Waiting for wake word: '{self.wake_word}'")
-
             while True:
                 if not self.listen_for_wake_word(r, source):
                     continue
 
                 try:
                     self.stdout.write("Listening for query...")
-                    self.speak("Listening for query...")
                     audio = r.listen(
                         source, phrase_time_limit=5
                     )  # Listen for up to 5 seconds at a time
@@ -152,17 +214,14 @@ class Command(BaseCommand):
                     try:
                         recognized_text = r.recognize_whisper(audio, language="english")
                         self.stdout.write(f"You said: {recognized_text}")
-                        self.speak(f"You said: {recognized_text}")
 
                         # Perform semantic search with the recognized text
                         search_results = self.semantic_search(recognized_text)
                         self.stdout.write("Search result:")
                         for result in search_results:
-                            result_text = (
-                                f"ID: {result['id']}, Context: {result['context']}"
-                            )
-                            self.stdout.write(result_text)
-                            self.speak(result_text)
+                            self.stdout.write(result["response_text"])
+                            self.speak(result["response_text"])
+                            self.set_command(result["cmd"])
 
                     except sr.UnknownValueError:
                         self.stdout.write("Could not understand audio.")

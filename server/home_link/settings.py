@@ -28,6 +28,7 @@ env = environ.Env(
     EMAIL_HOST_USER=(str, ""),
     EMAIL_HOST_PASSWORD=(str, ""),
     EMAIL_USE_TLS=(bool, True),
+    CAM_ADDRESS=(str, ""),
 )
 
 # Quick-start development settings - unsuitable for production
@@ -52,6 +53,9 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = env("EMAIL_USE_TLS")
+
+# Camera Address
+CAM_ADDRESS = env("CAM_ADDRESS")
 
 # Application definition
 

@@ -7,7 +7,6 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
-from django.core.cache import cache
 
 import pytz
 import face_recognition
@@ -21,7 +20,7 @@ COMMANDS_DIR = Path(__file__).resolve().parent
 FACES_DIR = f"{COMMANDS_DIR}/faces"
 BIOMETRICS_DIR = COMMANDS_DIR.parent.parent
 ALLOWED_IMG_EXTENTIONS = ("jpg", "png", "webp", "jpeg")
-ADDRESS = "https://XXX.XXX.X.X:8080/video"
+CAM_ADDRESS = settings.CAM_ADDRESS
 TIMEZONE = pytz.timezone("Asia/Colombo")
 
 
@@ -45,7 +44,7 @@ class Command(BaseCommand):
         encodeListKnown = findEncodings(images)
         print("Encoding Complete")
 
-        cap = cv2.VideoCapture(ADDRESS)
+        cap = cv2.VideoCapture(CAM_ADDRESS)
 
         while True:
             success, img = cap.read()
