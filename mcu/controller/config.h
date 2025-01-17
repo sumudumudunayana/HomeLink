@@ -2,11 +2,11 @@
 #define CONFIG_H
 
 #include <Servo.h>
-#include <dht.h>
+#include "DHT.h"
 
 // External objects
 extern Servo doorServo;
-extern dht DHT;
+extern DHT dht;
 
 // Door controller variables
 extern int pos;
@@ -32,6 +32,8 @@ extern const int buzzerPin;
 extern const int lower_limit;
 extern const int upper_limit;
 extern const int fanPin;
+extern const int enPin;
+extern const int dirPin;
 extern int temState;
 extern int temVal;
 extern int fanSpeed;

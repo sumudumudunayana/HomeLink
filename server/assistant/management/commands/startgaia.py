@@ -1,7 +1,8 @@
 import json
 import speech_recognition as sr
 from django.core.management.base import BaseCommand
-
+from multiprocessing import Process
+from threading import Event
 import time
 from sentence_transformers import SentenceTransformer, util
 import torch
@@ -9,7 +10,7 @@ from gtts import gTTS
 from io import BytesIO
 import pygame
 import os
-
+import signal
 from home_link import device_manager
 
 COMMAND_DATA = [
@@ -79,8 +80,9 @@ class Command(BaseCommand):
         self.model = SentenceTransformer("all-MiniLM-L6-v2")
         self.encode_and_save_dataset()
         self.data, self.embeddings = self.load_encoded_dataset()
-        pygame.init()
-        pygame.mixer.init()
+        self.stop_event = Event()
+        signal.signal(signal.SIGINT, self.signal_handler)
+        signal.signal(signal.SIGTERM, self.signal_handler)
         self.wake_word = "gaia"
         self.similar_wake_words = [
             "guy",
@@ -92,6 +94,10 @@ class Command(BaseCommand):
             "guyya",
         ]
         self.user_name = "Ishanka"
+
+    def signal_handler(self, signum, frame):
+        self.stdout.write("Received termination signal. Stopping the assistant...")
+        self.stop_event.set()
 
     def encode_and_save_dataset(self, output_file="encoded_data.json"):
         # Sample data: dictionary of objects with 'context' field
@@ -193,15 +199,18 @@ class Command(BaseCommand):
             elif "light" in command:
                 device_manager.light = command
 
-    def handle(self, *args, **options):
+    def run_assistant(self):
+        pygame.init()
+        pygame.mixer.init()
         r = sr.Recognizer()
 
         with sr.Microphone() as source:
-            r.adjust_for_ambient_noise(source)  # Adjust for ambient noise once
+            r.adjust_for_ambient_noise(source)
 
             self.speak("Hello, Good afternoon, I am Gaia, your personal assistant.")
             self.stdout.write(f"Waiting for wake word: '{self.wake_word}'")
-            while True:
+
+            while not self.stop_event.is_set():
                 if not self.listen_for_wake_word(r, source):
                     continue
 
@@ -234,10 +243,9 @@ class Command(BaseCommand):
                         error_message = f"An unexpected error occurred during recognition or search: {e}"
                         self.stderr.write(error_message)
                         self.speak(error_message)
-
                 except KeyboardInterrupt:
-                    self.stdout.write("Stopping transcription and search.")
-                    self.speak("Stopping transcription and search.")
+                    self.stdout.write("Shutting Down.")
+                    self.speak("Shutting Down.")
                     break
                 except OSError as e:
                     error_message = f"Error accessing microphone: {e}. Is the microphone available and permissions granted?"
@@ -259,3 +267,21 @@ class Command(BaseCommand):
                     break  # Exit the loop if a critical error happens
 
                 time.sleep(0.2)  # Small delay to prevent excessive CPU usage
+        pygame.quit()
+
+    def handle(self, *args, **options):
+        process = Process(target=self.run_assistant)
+        process.start()
+
+        try:
+            process.join()
+        except KeyboardInterrupt:
+            self.stdout.write("Keyboard interrupt received. Stopping the assistant...")
+            self.stop_event.set()
+            process.join(timeout=5)
+            if process.is_alive():
+                self.stdout.write("Assistant didn't stop gracefully. Terminating...")
+                process.terminate()
+                process.join()
+
+        self.stdout.write("Assistant stopped.")

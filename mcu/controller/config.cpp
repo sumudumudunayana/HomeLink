@@ -2,7 +2,7 @@
 
 // External objects
 Servo doorServo;
-dht DHT;
+DHT dht(dhtDataPin, DHT11);
 
 // Door controller variables
 int pos = 0;
@@ -15,7 +15,7 @@ const unsigned long openDuration = 10000;
 
 // Light controller variables
 const int lightPin = 4;
-const int ldrPin = A0;
+const int ldrPin = 8;
 int lightState = LOW;
 int ldrVal = LOW;
 
@@ -27,12 +27,14 @@ const int buzzerPin = 10;
 // Fan controller variables
 const int lower_limit = 25;
 const int upper_limit = 35;
-const int fanPin = 3;
+const int fanPin = 3; 
+const int dirPin = 6;
 int temState = LOW;
 int temVal = 0;
 int fanSpeed = 0;
 int dhtData = 0;
 int dhtDataPin = 13;
+
 
 // Device statuses
 String DOOR_STATUS = "door_operate_auto";
